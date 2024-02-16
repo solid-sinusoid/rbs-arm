@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="$(arg name)">
+  <xacro:arg name="name" default="rbs_arm_manip" />
+  <xacro:arg name="prefix" default="" />
+  
+  <xacro:include filename="$(find rbs_arm)/config/moveit/rbs_arm_macro.srdf.xacro" />
+
+  <xacro:rbs_arm name="$(arg name)" prefix="$(arg prefix)" />
+
+</robot>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="ee_link" params="prefix parent hardware">
+
+    <xacro:include filename="$(find rbs_arm)/urdf/inc/joint_hardware.xacro" />
+    <xacro:include filename="$(find rbs_arm)/urdf/inc/materials.xacro" />
+
+    <joint name="${prefix}ee_link_joint" type="revolute">
+      <limit lower="-1.5708" upper="3.14159" effort="78" velocity="0.52" />
+      <origin rpy="0.00000 0.00000 0.00000" xyz="0.10000 0.00000 0.09473" />
+      <parent link="${prefix}${parent}" />
+      <child link="${prefix}ee_link" />
+      <axis xyz="0 1 0" />
+    </joint>
+
+    <joint name="${prefix}tool0_joint" type="fixed">
+      <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.11000" />
+      <parent link="${prefix}ee_link" />
+      <child link="${prefix}tool0" />
+    </joint>
+
+    <link name="${prefix}tool0" />
+
+    <link name="${prefix}ee_link">
+      <collision name="${prefix}ee_link_collision">
+        <origin rpy="-0.00000 0.00000 -0.00000" xyz="0.00000 -0.00000 0.00000" />
+        <geometry>
+          <mesh filename="file://$(find rbs_arm)/meshes/collision/tail_link.stl"
+            scale="1.00000 1.00000 1.00000" />
+        </geometry>
+      </collision>
+      <inertial>
+        <inertia ixx="0.00147695259043549" ixy="-2.66894744420299E-05" ixz="-4.40871314563273E-05"
+          iyy="0.00135500487881796" iyz="-3.19001462979333E-05" izz="0.00087582892706912" />
+        <origin rpy="0.00000 0.00000 0.00000"
+          xyz="-9.7531539777207E-06 -0.000888494418875867 0.0342332199538358" />
+        <mass value="1.88031044620482" />
+      </inertial>
+      <visual name="${prefix}ee_link_visual">
+        <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000" />
+        <geometry>
+          <mesh filename="file://$(find rbs_arm)/meshes/visual/tail_link.dae"
+            scale="1.00000 1.00000 1.00000" />
+        </geometry>
+      </visual>
+    </link>
+
+    <xacro:joint_hardware joint_name="${prefix}ee_link_joint" hardware="${hardware}" p="10" d="0.5" />
+    <xacro:rbs_materials link_name="${prefix}ee_link" link_type="ee_link" />
+
+  </xacro:macro>
+</robot>

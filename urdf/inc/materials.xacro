@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="rbs_materials" params="link_name link_type">
+    <gazebo reference="${link_name}">
+      <visual>
+        <material>
+          <diffuse>0.8 0.8 0.8 1</diffuse>
+          <specular>0.6 0.6 0.6 1</specular>
+          <ambient>1.0 1.0 1.0</ambient>
+          <lighting>true</lighting>
+          <emissive>0 0 0 1</emissive>
+          <pbr>
+            <metal>
+              <albedo_map>$(find rbs_arm)/materials/textures/${link_type}_d.png</albedo_map>
+              <normal_map>$(find rbs_arm)/materials/textures/${link_type}_n.png</normal_map>
+              <ambient_occlusion_map>$(find rbs_arm)/materials/textures/${link_type}_ao.png</ambient_occlusion_map>
+              <roughness_map>$(find rbs_arm)/materials/textures/${link_type}_r.png</roughness_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </gazebo>
+  </xacro:macro>
+</robot>

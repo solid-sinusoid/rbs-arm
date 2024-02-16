@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="fork_link" params="prefix parent name hardware">
+
+    <xacro:include filename="$(find rbs_arm)/urdf/inc/joint_hardware.xacro" />
+    <xacro:include filename="$(find rbs_arm)/urdf/inc/materials.xacro" />
+
+    <joint name="${prefix}${name}_joint" type="revolute">
+      <limit lower="-3.14159" upper="3.14159" effort="78" velocity="0.52" />
+      <xacro:if value="${parent=='base_link'}">
+        <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.17833" />
+      </xacro:if>
+      <xacro:unless value="${parent=='base_link'}">
+        <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.13300" />
+      </xacro:unless>
+      <parent link="${prefix}${parent}" />
+      <child link="${prefix}${name}" />
+      <axis xyz="0 0 1" />
+    </joint>
+
+    <link name="${prefix}${name}">
+      <collision name="${prefix}${name}_collision">
+        <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000" />
+        <geometry>
+          <mesh filename="file://$(find rbs_arm)/meshes/collision/fork.stl"
+            scale="1.00000 1.00000 1.00000" />
+        </geometry>
+      </collision>
+      <inertial>
+        <inertia ixx="0.00367804533572758" ixy="1.04277925521833E-05" ixz="-0.00149971410403071"
+          iyy="0.00415208849477534" iyz="-0.00122" izz="0.00329" />
+        <origin rpy="0.00000 0.00000 0.00000"
+          xyz="0.0472051139085306 0.00208890925682996 0.0557265410642575" />
+        <mass value="1.12472202892859" />
+      </inertial>
+      <visual name="${prefix}${name}_visual">
+        <origin rpy="0.00000 -0.00000 -0.00000" xyz="0.00000 -0.00000 0.00000" />
+        <geometry>
+          <mesh filename="file://$(find rbs_arm)/meshes/visual/fork.dae"
+            scale="1.00000 1.00000 1.00000" />
+        </geometry>
+      </visual>
+    </link>
+
+    <xacro:joint_hardware joint_name="${prefix}${name}_joint" hardware="${hardware}" p="1000000" d="0.5" />
+    <xacro:rbs_materials link_name="${prefix}${name}" link_type="fork" />
+
+  </xacro:macro>
+</robot>

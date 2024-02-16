@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rbs_arm">
+  <xacro:arg name="gripper_name" default="" />
+  <xacro:arg name="hardware" default="gazebo" />
+  <xacro:arg name="simulation_controllers" default="" />
+  <xacro:arg name="prefix" default="" />
+
+  <xacro:include filename="$(find rbs_arm)/urdf/rbs_arm_modular_macro.xacro" />
+  <link name="world" />
+  <xacro:rbs_arm parent="world" prefix="$(arg prefix)" hardware="$(arg hardware)"
+    gripper_name="$(arg gripper_name)" controllers="$(arg simulation_controllers)" />
+</robot>

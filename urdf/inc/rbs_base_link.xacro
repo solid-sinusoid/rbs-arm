@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="base_link" params="parent prefix *origin hardware">
+
+    <xacro:include filename="$(find rbs_arm)/urdf/inc/joint_hardware.xacro" />
+    <xacro:include filename="$(find rbs_arm)/urdf/inc/materials.xacro"/>
+
+    <joint name="${prefix}base_link_joint" type="fixed">
+      <xacro:insert_block name="origin" />
+      <parent link="${parent}" />
+      <child link="${prefix}base_link" />
+    </joint>
+
+    <link name="${prefix}base_link">
+      <collision name="${prefix}base_link_collision">
+        <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000" />
+        <geometry>
+          <mesh filename="file://$(find rbs_arm)/meshes/collision/start_link.stl"
+            scale="1.00000 1.00000 1.00000" />
+        </geometry>
+      </collision>
+      <inertial>
+        <inertia ixx="0.00503302470272442" ixy="0.000343817346410954" ixz="-4.74990755448368E-06"
+          iyy="0.00337962410057753" iyz="-2.3099255620051E-05" izz="0.00405858207282473" />
+        <origin rpy="0.00000 0.00000 0.00000"
+          xyz="-0.000297002857922682 0.0964721185617698 -0.000361033370053684" />
+        <mass value="1.88031044620482" />
+      </inertial>
+      <visual name="${prefix}base_link_visual">
+        <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000" />
+        <geometry>
+          <mesh filename="file://$(find rbs_arm)/meshes/visual/start_link.dae"
+            scale="1.00000 1.00000 1.00000" />
+        </geometry>
+      </visual>
+    </link>
+
+    <!-- <xacro:joint_hardware joint_name="${prefix}base_link" hardware="${hardware}" p="100"/> -->
+    <xacro:rbs_materials link_name="${prefix}base_link" link_type="base_link" />
+
+  </xacro:macro>
+</robot>
