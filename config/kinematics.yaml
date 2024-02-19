@@ -1,3 +1,5 @@
+# NOTE: I don't know why, but MoveIt wants that this file was being here
+# Any provided paths to the move_group node was ignored
 /**:
   ros__parameters:
     robot_description_kinematics:

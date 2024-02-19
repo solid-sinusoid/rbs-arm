@@ -2,7 +2,6 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
  <xacro:macro name="rbs_arm" params="parent prefix hardware gripper_name controllers">
    
-
   <xacro:include filename="$(find rbs_arm)/urdf/inc/rbs_base_link.xacro" />
   <xacro:include filename="$(find rbs_arm)/urdf/inc/rbs_ee_link.xacro" />
   <xacro:include filename="$(find rbs_arm)/urdf/inc/rbs_fork_link.xacro" />

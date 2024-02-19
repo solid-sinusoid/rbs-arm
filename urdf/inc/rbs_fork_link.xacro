@@ -5,7 +5,7 @@
     <xacro:include filename="$(find rbs_arm)/urdf/inc/joint_hardware.xacro" />
     <xacro:include filename="$(find rbs_arm)/urdf/inc/materials.xacro" />
 
-    <joint name="${prefix}${name}_joint" type="revolute">
+    <joint name="${prefix}${name}_joint" type="continuous">
       <limit lower="-3.14159" upper="3.14159" effort="78" velocity="0.52" />
       <xacro:if value="${parent=='base_link'}">
         <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.17833" />

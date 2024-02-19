@@ -73,7 +73,6 @@ def generate_launch_description():
         "config",
         "kinematics.yaml")
     
-    print(robot_description_kinematics)
     # Planning Configuration
     ompl_planning_pipeline_config = {
         "move_group": {
