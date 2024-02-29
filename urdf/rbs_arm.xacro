@@ -3,16 +3,16 @@
     <xacro:arg name="gripper_name" default="rbs_gripper" />
     <xacro:arg name="hardware" default="fake" />
     <xacro:arg name="simulation_controllers" default="" />
-    <xacro:arg name="prefix" default="" />
+    <xacro:arg name="tf_prefix" default="" />
 
     <xacro:property name="hardware" default="$(arg hardware)" />
-    <xacro:property name="prefix" default="$(arg prefix)" />
+    <xacro:property name="tf_prefix" default="$(arg tf_prefix)" />
 
     <xacro:include filename="$(find rbs_arm)/urdf/rbs_arm_macro.xacro" />
     
     <link name="world" />
     <!-- ROBOT-->
-    <xacro:rbs_arm parent="world" hardware="$(arg hardware)" prefix="$(arg prefix)">
+    <xacro:rbs_arm parent="world" hardware="$(arg hardware)" tf_prefix="$(arg tf_prefix)">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
     </xacro:rbs_arm>
     <!-- GRIPPER-->
@@ -23,7 +23,7 @@
             <plugin filename="libign_ros2_control-system.so"
                 name="ign_ros2_control::IgnitionROS2ControlPlugin">
                 <parameters>$(arg simulation_controllers)</parameters>
-                <controller_manager_node_name>${prefix}/controller_manager</controller_manager_node_name>
+                <controller_manager_node_name>${tf_prefix}/controller_manager</controller_manager_node_name>
             </plugin>
         </gazebo>
     </xacro:if>

@@ -12,7 +12,7 @@ def generate_launch_description():
 
     doc = xacro.process_file(os.path.join(get_package_share_directory("rbs_arm"), 'urdf', 'rbs_arm_modular.xacro'), mappings={
         "gripper_name": "rbs-gripper",
-        "prefix": "",
+        "tf_prefix": "",
         "hardware": "gazebo",
         "simulation_controllers": initial_joint_controllers_file_path
     })

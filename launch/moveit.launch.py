@@ -47,27 +47,28 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "prefix",
+            "tf_prefix",
             default_value="''",
-            description="prefix for robot links",
+            description="tf_prefix for robot links",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "namespace",
+            default_value="",
+            description="Namespace for move_group_node",
         )
     )
     
-    prefix = LaunchConfiguration("prefix")
-    moveit_config_package = LaunchConfiguration("moveit_config_package")
-    moveit_config_file = LaunchConfiguration("moveit_config_file")
     use_sim_time = LaunchConfiguration("use_sim_time")
     robot_description_content = LaunchConfiguration("robot_description")
     robot_description_semantic_content = LaunchConfiguration("robot_description_semantic")
+    namespace = LaunchConfiguration("namespace")
 
     robot_description = {"robot_description": robot_description_content}
 
     robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
     use_sim_time = {"use_sim_time": use_sim_time}
-    #
-    # robot_description_kinematics = PathJoinSubstitution(
-    #     [FindPackageShare(moveit_config_package), "config/moveit", "kinematics.yaml"]
-    # )
     robot_description_kinematics = os.path.join(
         get_package_share_directory("rbs_arm"), 
         "config",
@@ -103,6 +104,7 @@ def generate_launch_description():
     move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
+        namespace=namespace,
         output="screen",
         parameters=[
             robot_description,
@@ -116,43 +118,7 @@ def generate_launch_description():
         ],
     )
     
-    move_topose_action_server = Node(
-        package="rbs_skill_servers",
-        executable="move_topose_action_server",
-        parameters=[
-            robot_description,
-            robot_description_semantic,
-            robot_description_kinematics,
-            use_sim_time,
-        ]
-    )
-
-    move_cartesian_path_action_server = Node(
-        package="rbs_skill_servers",
-        executable="move_cartesian_path_action_server",
-        parameters=[
-            robot_description,
-            robot_description_semantic,
-            robot_description_kinematics,
-            use_sim_time,
-        ]
-    )
-    
-    move_joint_state_action_server = Node(
-        package="rbs_skill_servers",
-        executable="move_to_joint_states_action_server",
-        parameters=[
-            robot_description,
-            robot_description_semantic,
-            robot_description_kinematics,
-            use_sim_time,
-        ]
-    )
-
     nodes_to_start = [
         move_group_node,
-        move_topose_action_server,
-        move_cartesian_path_action_server,
-        move_joint_state_action_server,
     ]
     return LaunchDescription(declared_arguments + nodes_to_start)

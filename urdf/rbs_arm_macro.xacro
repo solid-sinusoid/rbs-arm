@@ -3,66 +3,66 @@
   <xacro:include filename="$(find rbs_arm)/urdf/rbs_arm_ros2_control.xacro" />
   <xacro:include filename="$(find rbs_arm)/urdf/inc/materials.xacro" />
 
-  <xacro:macro name="rbs_arm" params="prefix *origin parent hardware">
+  <xacro:macro name="rbs_arm" params="tf_prefix *origin parent hardware">
     <!-- ros2_control description macros-->
-    <xacro:rbs_arm_ros2_control name="rbs_arm_hardware_interface" prefix="${prefix}"
+    <xacro:rbs_arm_ros2_control name="rbs_arm_hardware_interface" tf_prefix="${tf_prefix}"
       hardware="${hardware}" />
     <!-- JOINTS-->
-    <joint name="${prefix}base_link_joint" type="fixed">
+    <joint name="${tf_prefix}base_link_joint" type="fixed">
       <xacro:insert_block name="origin" />
       <parent link="${parent}" />
-      <child link="${prefix}base_link" />
+      <child link="${tf_prefix}base_link" />
     </joint>
-    <joint name="${prefix}ee_link_joint" type="revolute">
+    <joint name="${tf_prefix}ee_link_joint" type="revolute">
       <limit lower="-1.5708" upper="3.14159" effort="78" velocity="0.52" />
       <origin rpy="0.00000 0.00000 0.00000" xyz="0.10000 0.00000 0.09473" />
-      <parent link="${prefix}fork.003_link" />
-      <child link="${prefix}ee_link" />
+      <parent link="${tf_prefix}fork.003_link" />
+      <child link="${tf_prefix}ee_link" />
       <axis xyz="0 1 0" />
     </joint>
-    <joint name="${prefix}fork002_link_joint" type="revolute">
+    <joint name="${tf_prefix}fork002_link_joint" type="revolute">
       <limit lower="-3.14159" upper="3.14159" effort="78" velocity="0.52" />
       <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.13300" />
-      <parent link="${prefix}main_link" />
-      <child link="${prefix}fork.002_link" />
+      <parent link="${tf_prefix}main_link" />
+      <child link="${tf_prefix}fork.002_link" />
       <axis xyz="0 0 1" />
     </joint>
-    <joint name="${prefix}fork003_link_joint" type="revolute">
+    <joint name="${tf_prefix}fork003_link_joint" type="revolute">
       <limit lower="-3.14159" upper="3.14159" effort="78" velocity="0.52" />
       <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.13300" />
-      <parent link="${prefix}main.001_link" />
-      <child link="${prefix}fork.003_link" />
+      <parent link="${tf_prefix}main.001_link" />
+      <child link="${tf_prefix}fork.003_link" />
       <axis xyz="0 0 1" />
     </joint>
-    <joint name="${prefix}fork001_link_joint" type="revolute">
+    <joint name="${tf_prefix}fork001_link_joint" type="revolute">
       <limit lower="-3.14159" upper="3.14159" effort="78" velocity="0.52" />
       <origin rpy="0.00000 0.00000 -0.00000" xyz="0.00000 -0.00000 0.17833" />
-      <parent link="${prefix}base_link" />
-      <child link="${prefix}fork_link" />
+      <parent link="${tf_prefix}base_link" />
+      <child link="${tf_prefix}fork_link" />
       <axis xyz="0 0 1" />
     </joint>
-    <joint name="${prefix}main002_link_joint" type="revolute">
+    <joint name="${tf_prefix}main002_link_joint" type="revolute">
       <limit lower="-1.5708" upper="3.14159" effort="78" velocity="0.52" />
       <origin rpy="-0.00000 0.00000 0.00000" xyz="0.10000 0.00000 0.09400" />
-      <parent link="${prefix}fork.002_link" />
-      <child link="${prefix}main.001_link" />
+      <parent link="${tf_prefix}fork.002_link" />
+      <child link="${tf_prefix}main.001_link" />
       <axis xyz="0 1 0" />
     </joint>
-    <joint name="${prefix}main001_link_joint" type="revolute">
+    <joint name="${tf_prefix}main001_link_joint" type="revolute">
       <limit lower="-1.5708" upper="3.14159" effort="78" velocity="0.52" />
       <origin rpy="0.00000 0.00000 0.00000" xyz="0.10000 0.00000 0.09400" />
-      <parent link="${prefix}fork_link" />
-      <child link="${prefix}main_link" />
+      <parent link="${tf_prefix}fork_link" />
+      <child link="${tf_prefix}main_link" />
       <axis xyz="0 1 0" />
     </joint>
-    <joint name="${prefix}tool0_joint" type="fixed">
+    <joint name="${tf_prefix}tool0_joint" type="fixed">
       <origin rpy="-0.00000 0.00000 -0.00000" xyz="0.00001 -0.00010 0.11000" />
-      <parent link="${prefix}ee_link" />
-      <child link="${prefix}tool0" />
+      <parent link="${tf_prefix}ee_link" />
+      <child link="${tf_prefix}tool0" />
     </joint>
     <!-- LINKS-->
-    <link name="${prefix}base_link">
-      <collision name="${prefix}base_collision">
+    <link name="${tf_prefix}base_link">
+      <collision name="${tf_prefix}base_collision">
         <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000" />
         <geometry>
           <mesh filename="file://$(find rbs_arm)/meshes/collision/start_link.stl"
@@ -76,7 +76,7 @@
           xyz="-0.000297002857922682 0.0964721185617698 -0.000361033370053684" />
         <mass value="1.88031044620482" />
       </inertial>
-      <visual name="${prefix}base_visual">
+      <visual name="${tf_prefix}base_visual">
         <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000" />
         <geometry>
           <mesh filename="file://$(find rbs_arm)/meshes/visual/start_link.dae"
@@ -84,8 +84,8 @@
         </geometry>
       </visual>
     </link>
-    <link name="${prefix}ee_link">
-      <collision name="${prefix}ee_collision">
+    <link name="${tf_prefix}ee_link">
+      <collision name="${tf_prefix}ee_collision">
         <origin rpy="-0.00000 0.00000 -0.00000" xyz="0.00000 -0.00000 0.00000" />
         <geometry>
           <mesh filename="file://$(find rbs_arm)/meshes/collision/tail_link.stl"
@@ -99,7 +99,7 @@
           xyz="-9.7531539777207E-06 -0.000888494418875867 0.0342332199538358" />
         <mass value="1.88031044620482" />
       </inertial>
-      <visual name="${prefix}ee_visual">
+      <visual name="${tf_prefix}ee_visual">
         <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000" />
         <geometry>
           <mesh filename="file://$(find rbs_arm)/meshes/visual/tail_link.dae"
@@ -107,8 +107,8 @@
         </geometry>
       </visual>
     </link>
-    <link name="${prefix}fork.002_link">
-      <collision name="${prefix}fork.002_collision">
+    <link name="${tf_prefix}fork.002_link">
+      <collision name="${tf_prefix}fork.002_collision">
         <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000" />
         <geometry>
           <mesh filename="file://$(find rbs_arm)/meshes/collision/fork.stl"
@@ -122,7 +122,7 @@
           xyz="0.0472051139085306 0.00208890925682996 0.0557265410642575" />
         <mass value="1.12472202892859" />
       </inertial>
-      <visual name="${prefix}fork.002_visual">
+      <visual name="${tf_prefix}fork.002_visual">
         <origin rpy="0.00000 -0.00000 -0.00000" xyz="0.00000 -0.00000 0.00000" />
         <geometry>
           <mesh filename="file://$(find rbs_arm)/meshes/visual/fork.dae"
@@ -130,8 +130,8 @@
         </geometry>
       </visual>
     </link>
-    <link name="${prefix}fork.003_link">
-      <collision name="${prefix}fork.003_collision">
+    <link name="${tf_prefix}fork.003_link">
+      <collision name="${tf_prefix}fork.003_collision">
         <origin rpy="-0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000" />
         <geometry>
           <mesh filename="file://$(find rbs_arm)/meshes/collision/fork.stl"
@@ -145,7 +145,7 @@
           xyz="0.0472051139085306 0.00208890925682996 0.0557265410642575" />
         <mass value="1.12472202892859" />
       </inertial>
-      <visual name="${prefix}fork.003_visual">
+      <visual name="${tf_prefix}fork.003_visual">
         <origin rpy="-0.00000 0.00000 -0.00000" xyz="0.00000 -0.00000 0.00000" />
         <geometry>
           <mesh filename="file://$(find rbs_arm)/meshes/visual/fork.dae"
@@ -153,8 +153,8 @@
         </geometry>
       </visual>
     </link>
-    <link name="${prefix}fork_link">
-      <collision name="${prefix}fork_collision">
+    <link name="${tf_prefix}fork_link">
+      <collision name="${tf_prefix}fork_collision">
         <origin rpy="0.00000 0.00000 0.00000" xyz="-0.00000 0.00000 0.00000" />
         <geometry>
           <mesh filename="file://$(find rbs_arm)/meshes/collision/fork.stl"
@@ -168,7 +168,7 @@
           xyz="0.0472051139085306 0.00208890925682996 0.0557265410642575" />
         <mass value="1.12472202892859" />
       </inertial>
-      <visual name="${prefix}fork_visual">
+      <visual name="${tf_prefix}fork_visual">
         <origin rpy="0.00000 0.00000 -0.00000" xyz="-0.00000 0.00000 0.00000" />
         <geometry>
           <mesh filename="file://$(find rbs_arm)/meshes/visual/fork.dae"
@@ -176,8 +176,8 @@
         </geometry>
       </visual>
     </link>
-    <link name="${prefix}main.001_link">
-      <collision name="${prefix}main.001_collision">
+    <link name="${tf_prefix}main.001_link">
+      <collision name="${tf_prefix}main.001_collision">
         <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000" />
         <geometry>
           <mesh filename="file://$(find rbs_arm)/meshes/collision/main_link.stl"
@@ -191,7 +191,7 @@
           xyz="0.00186712264682627 -0.000412152188777604 0.0516389446895805" />
         <mass value="1.58688811563124" />
       </inertial>
-      <visual name="${prefix}main.001_visual">
+      <visual name="${tf_prefix}main.001_visual">
         <origin rpy="0.00000 -0.00000 -0.00000" xyz="0.00000 0.00000 0.00000" />
         <geometry>
           <mesh filename="file://$(find rbs_arm)/meshes/visual/main_link.dae"
@@ -199,8 +199,8 @@
         </geometry>
       </visual>
     </link>
-    <link name="${prefix}main_link">
-      <collision name="${prefix}main_collision">
+    <link name="${tf_prefix}main_link">
+      <collision name="${tf_prefix}main_collision">
         <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000" />
         <geometry>
           <mesh filename="file://$(find rbs_arm)/meshes/collision/main_link.stl"
@@ -214,7 +214,7 @@
           xyz="0.00186712264682627 -0.000412152188777604 0.0516389446895805" />
         <mass value="1.58688811563124" />
       </inertial>
-      <visual name="${prefix}main_visual">
+      <visual name="${tf_prefix}main_visual">
         <origin rpy="0.00000 -0.00000 -0.00000" xyz="0.00000 0.00000 0.00000" />
         <geometry>
           <mesh filename="file://$(find rbs_arm)/meshes/visual/main_link.dae"
@@ -222,8 +222,8 @@
         </geometry>
       </visual>
     </link>
-    <link name="${prefix}tool0" />
+    <link name="${tf_prefix}tool0" />
     <!-- MATERIALS-->
-    <xacro:rbs_materials link_name="${prefix}main_link" link_type="main_link" />
+    <xacro:rbs_materials link_name="${tf_prefix}main_link" link_type="main_link" />
   </xacro:macro>
 </robot>

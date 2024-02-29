@@ -3,10 +3,13 @@
   <xacro:arg name="gripper_name" default="" />
   <xacro:arg name="hardware" default="gazebo" />
   <xacro:arg name="simulation_controllers" default="" />
-  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="tf_prefix" default="" />
+  <xacro:arg name="namespace" default="arm0"/>
 
   <xacro:include filename="$(find rbs_arm)/urdf/rbs_arm_modular_macro.xacro" />
   <link name="world" />
-  <xacro:rbs_arm parent="world" prefix="$(arg prefix)" hardware="$(arg hardware)"
-    gripper_name="$(arg gripper_name)" controllers="$(arg simulation_controllers)" />
+  <xacro:rbs_arm namespace="$(arg namespace)" parent="world" tf_prefix="$(arg tf_prefix)" hardware="$(arg hardware)"
+    gripper_name="$(arg gripper_name)" controllers="$(arg simulation_controllers)">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:rbs_arm>
 </robot>

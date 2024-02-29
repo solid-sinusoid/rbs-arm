@@ -13,12 +13,12 @@ controller_manager:
 joint_trajetctory_controller:
   ros__parameters:
     joints:
-      - $(var prefix)fork0_link_joint
-      - $(var prefix)main0_link_joint
-      - $(var prefix)fork1_link_joint
-      - $(var prefix)main1_link_joint
-      - $(var prefix)fork2_link_joint
-      - $(var prefix)ee_link_joint
+      - $(var tf_prefix)fork0_link_joint
+      - $(var tf_prefix)main0_link_joint
+      - $(var tf_prefix)fork1_link_joint
+      - $(var tf_prefix)main1_link_joint
+      - $(var tf_prefix)fork2_link_joint
+      - $(var tf_prefix)ee_link_joint
     command_interfaces:
       - position
     state_interfaces:
