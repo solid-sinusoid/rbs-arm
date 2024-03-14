@@ -35,12 +35,8 @@
         <plugin filename="libign_ros2_control-system.so"
           name="ign_ros2_control::IgnitionROS2ControlPlugin">
           <parameters>$(arg simulation_controllers)</parameters>
-          <!-- <controller_manager_prefix_node_name>${namespace}</controller_manager_prefix_node_name> -->
-          <!-- <controller_manager_node_name>/${namespace}/controller_manager</controller_manager_node_name> -->
           <ros>
             <namespace>${namespace}</namespace>
-            <!-- <remapping>/motion_controller_handle/target_frame:=/target_frame</remapping> -->
-            <!-- <remapping>/cartesian_motion_controller/target_frame:=/target_frame</remapping> -->
           </ros>
         </plugin>
       </gazebo>

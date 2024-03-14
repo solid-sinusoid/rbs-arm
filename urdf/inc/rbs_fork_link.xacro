@@ -5,7 +5,7 @@
     <xacro:include filename="$(find rbs_arm)/urdf/inc/joint_hardware.xacro" />
     <xacro:include filename="$(find rbs_arm)/urdf/inc/materials.xacro" />
 
-    <joint name="${tf_prefix}${name}_joint" type="continuous">
+    <joint name="${tf_prefix}${name}_joint" type="revolute">
       <limit lower="-3.14159" upper="3.14159" effort="78" velocity="0.52" />
       <xacro:if value="${parent=='base_link'}">
         <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.17833" />
@@ -22,7 +22,7 @@
       <collision name="${tf_prefix}${name}_collision">
         <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000" />
         <geometry>
-          <mesh filename="file://$(find rbs_arm)/meshes/collision/fork.stl"
+          <mesh filename="file://$(find rbs_arm)/meshes/collision/fork_link.stl"
             scale="1.00000 1.00000 1.00000" />
         </geometry>
       </collision>
@@ -36,7 +36,7 @@
       <visual name="${tf_prefix}${name}_visual">
         <origin rpy="0.00000 -0.00000 -0.00000" xyz="0.00000 -0.00000 0.00000" />
         <geometry>
-          <mesh filename="file://$(find rbs_arm)/meshes/visual/fork.dae"
+          <mesh filename="file://$(find rbs_arm)/meshes/visual/fork_link.dae"
             scale="1.00000 1.00000 1.00000" />
         </geometry>
       </visual>

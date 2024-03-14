@@ -25,7 +25,7 @@
       <collision name="${tf_prefix}ee_link_collision">
         <origin rpy="-0.00000 0.00000 -0.00000" xyz="0.00000 -0.00000 0.00000" />
         <geometry>
-          <mesh filename="file://$(find rbs_arm)/meshes/collision/tail_link.stl"
+          <mesh filename="file://$(find rbs_arm)/meshes/collision/ee_link.stl"
             scale="1.00000 1.00000 1.00000" />
         </geometry>
       </collision>
@@ -39,7 +39,7 @@
       <visual name="${tf_prefix}ee_link_visual">
         <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000" />
         <geometry>
-          <mesh filename="file://$(find rbs_arm)/meshes/visual/tail_link.dae"
+          <mesh filename="file://$(find rbs_arm)/meshes/visual/ee_link.dae"
             scale="1.00000 1.00000 1.00000" />
         </geometry>
       </visual>
