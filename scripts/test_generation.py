@@ -12,6 +12,6 @@ def main(arg1):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="generate robot description")
     
-    parser.add_argument("ndof", type=int, help="ndof")
-    args = parser.parse_args()
-    main(args.ndof)
+    # parser.add_argument("ndof", type=int, help="ndof")
+    # args = parser.parse_args()
+    main(6)

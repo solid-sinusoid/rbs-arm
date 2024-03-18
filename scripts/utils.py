@@ -75,6 +75,9 @@ Robot.allowed_elements += [ "Ros2Control", "VirtualJoint", "PlanningGroup", "Pla
 # Group.allowed_elements += ["Ros2Control"]
 # Robot.allowed_elements += ["Ros2Control"]
 
+class VerboseSafeDumper(yaml.SafeDumper):
+    def ignore_aliases(self, data):
+        return True
 
 class bcolors:
     HEADER = '\033[95m'
@@ -90,14 +93,6 @@ class bcolors:
 def print_err(msg):
     print(bcolors.HEADER+"[ERROR]: "+msg+bcolors.ENDC)
 
-def get_adjacency_matrix(link_connections: dict, link_names:list):
-    adjacency_matrix = np.zeros((len(link_names), len(link_names)), dtype=int)
-    for i, parent_link in enumerate(link_names):
-        if parent_link in link_connections:
-            for child_link in link_connections[parent_link]:
-                j = link_names.index(child_link)
-                adjacency_matrix[i, j] = 1
-    return adjacency_matrix
 
 def load_yaml_abs(filepath:str):
     try:
@@ -114,21 +109,18 @@ def load_yaml_abs(filepath:str):
 def write_yaml_abs(data, file_path):
     try:
         with open(file_path, 'w') as file:
-            yaml.dump(data, file)
+            yaml.dump(data, file, Dumper=VerboseSafeDumper)
         print(f"Data has been successfully written to the file: {file_path}")
     except IOError as e:
         print(f"IOError occurred while writing the file: {e}")
     except Exception as e:
         print(f"An error occurred while writing the file: {e}")
 
-class MoveitReconfigurator:
-    def __init__(self, robot_package_path, robot_name):
-        self.robot_name = robot_name
-        self.robot_package_abs_path = robot_package_path
-        self.moveit_config_files = {
-            "ompl": self.robot_package_abs_path + "/config/moveit/ompl_planning.yaml",
-            "controllers": self.robot_package_abs_path + "/config/moveit/moveit_controllers.yaml",
-            "joint_limits": self.robot_package_abs_path + "/config/moveit/joint_limits.yaml",
-            "initial_positons": self.robot_package_abs_path + "/config/moveit/initial_positons.yaml",
-            "srdf": self.robot_package_abs_path + "/config/moveit/" + self.robot_name + ".srdf"
-        }
+
+class Ros2ControlReconfigurator:
+    def __init__(self, robot_base):
+        self.rb = robot_base
+        self.allowed_controller_names = self.rb.robot_config["ros2_control"]["allowed_controller_names"]
+
+    def _build_controller(self):
+        pass

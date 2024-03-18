@@ -54,3 +54,6 @@ ee_link:
     I: [0.00147695259043549, -2.66894744420299E-05, -4.40871314563273E-05, 0.00135500487881796, -3.19001462979333E-05, 0.00087582892706912]
     mesh_name: ee_link
 
+ros2_control:
+  allowed_controller_names: ["joint_trajectory_controller", "cartesian_motion_controller"]
+  allowed_controller_types: []

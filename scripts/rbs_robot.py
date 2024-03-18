@@ -1,12 +1,10 @@
-import enum
 from ament_index_python.packages import get_package_share_directory
 from odio_urdf import *
-import yaml
 from utils import *
-import numpy as np
+from moveit import MoveitReconfigurator
 
 class RobotBase:
-    def __init__(self, ndof:int, robot_name:str, parent:str, include_ros2_control = True):
+    def __init__(self, ndof:int, robot_name:str, parent:str, has_ros2_control=True, has_moveit=True, update=False):
         self.ndof = ndof
         self.robot_name = robot_name
         self.robot_package_abs_path = get_package_share_directory(robot_name)
@@ -15,183 +13,173 @@ class RobotBase:
         self.link_list = []
         self.link_connections = {}
         self.moveit_config_files = {}
-        self.robot_config = load_yaml_abs(self.robot_package_abs_path + "/config/robot_config.yaml")
+        self.robot_config = load_yaml_abs(f"{self.robot_package_abs_path}/config/robot_config.yaml")
+        self.group_link_joint = {key: [] for key in self.robot_config.keys()}
+        self.has_moveit = has_moveit
+        self.allowed_controller_names = self.robot_config["ros2_control"]["allowed_controller_names"]
+        self.ros2_control_config = f"{self.robot_package_abs_path}/config/rbs_arm_controllers.yaml"
 
-        if include_ros2_control == True:
-            self.urdf = self._genetate_robot_with_interface()
+        if has_ros2_control:
+            self.urdf = self._generate_robot_with_interface()
+            self._update_ros2_controllers()
         else:
             self.urdf = self._generate_robot_base()
 
-        print(self._update_moveit_config())
+        if self.has_moveit:
+            self.moveit_config = MoveitReconfigurator(self, update)
+            # print(self.moveit_config.get_srdf())
+            # print( self.moveit_config.get_joint_limits() )
+            # print("====================================")
+            # print(self.moveit_config.get_moveit_controllers())
 
-    def _update_ros2_control_config(self):
-        pass
-
-    def _update_moveit_config(self):
-        self._set_moveit_config_files()
-        srdf = self._generate_srdf()
-        self._update_joint_limits()
-        # self._update_controllers()
-        return srdf
-
-    def _update_joint_limits(self):
-        joint_limits = load_yaml_abs(self.moveit_config_files["joint_limits"]) 
-        if 'joint_limits' in joint_limits:
-            joints_old = list(joint_limits["joint_limits"].keys())
-            if len(joints_old) == len(self.joint_list):
-                for i, joint in enumerate(joints_old):
-                    joint_limits["joint_limits"][self.joint_list[i]] = joint_limits["joint_limits"].pop(joint)
-            else:
-        write_yaml_abs(joint_limits, self.moveit_config_files["joint_limits"])
-
-    def build_joint_limits_config(self, link_name:str):
-        has_vel_limit = True if self.robot_config[link_name]["joint"]["max_velocity"] in self.robot_config[link_name]["joint"].items() else False
-        config = {
-            "has_velocity_limits": has_vel_limit,
-            "max_velocity": 0.52000000000000002,
-            "has_acceleration_limits": False,
-            "max_acceleration": 0,
+    def _update_ros2_controllers(self):
+        ros2_control_config = load_yaml_abs(self.ros2_control_config)
+        ros2_control_config = {
+            self.robot_name: ros2_control_config
         }
-        return config
+        for section in ros2_control_config[self.robot_name]:
+            if "ros__parameters" in ros2_control_config[self.robot_name][section]:
+                params = ros2_control_config[self.robot_name][section]["ros__parameters"]
+                if "joints" in params:
+                    params["joints"] = self.joint_list
 
+        for section in ros2_control_config[self.robot_name]:
+            if "ros__parameters" in ros2_control_config[self.robot_name][section]:
+                params = ros2_control_config[self.robot_name][section]["ros__parameters"]
+                if "end_effector_link" in params:
+                    params["end_effector_link"] = self.link_list[-1]
+                if "robot_base_link" in params:
+                    params["robot_base_link"] = self.link_list[0]
+                if "ft_sensor_ref_link" in params:
+                    params["ft_sensor_ref_link"] = f"{self.robot_name}_link_tool0"
+        write_yaml_abs(ros2_control_config, self.ros2_control_config)
 
-    def _update_controllers(self):
-        moveit_controllers = load_yaml_abs(self.moveit_config_files["controllers"])
-        if 'moveit_simple_controller_manager' in moveit_controllers:
-            controller_manager = moveit_controllers['moveit_simple_controller_manager']
-            if 'joint_trajectory_controller' in controller_manager:
-                controller = controller_manager['joint_trajectory_controller']
-                if 'joints' in controller:
-                    controller['joints'] = self.joint_list
-        write_yaml_abs(moveit_controllers, self.moveit_config_files["controllers"])
-
-    def _set_moveit_config_files(self):
-        self.moveit_config_files = {
-            "ompl": self.robot_package_abs_path + "/config/moveit/ompl_planning.yaml",
-            "controllers": self.robot_package_abs_path + "/config/moveit/moveit_controllers.yaml",
-            "joint_limits": self.robot_package_abs_path + "/config/moveit/joint_limits.yaml",
-            "initial_positons": self.robot_package_abs_path + "/config/moveit/initial_positons.yaml",
-            "srdf": self.robot_package_abs_path + "/config/moveit/" + self.robot_name + ".srdf"
-        }
-
-    def _generate_srdf(self):
-        adjm = get_adjacency_matrix(self.link_connections, self.link_list)
-        srdf = Robot(name=self.robot_name)
-        plgr = PlanningGroup(
-            Chain(base_link=self.link_list[0], tip_link=self.link_list[-1]),
-            name = self.robot_name
-        )
-        srdf.extend([plgr])
-        for i, parent_link in enumerate(self.link_list):
-            if parent_link in self.link_connections:
-                for child_link in self.link_connections[parent_link]:
-                    j = self.link_list.index(child_link)
-                    if adjm[i,j] == 1:
-                        srdf.extend([DisableCollision(link1=parent_link, link2=child_link)])
-        return srdf
-        
-
-    def _link(self, N:int, cm:list, mass:float, I:list, mesh_name:str):
-        link_name = self.robot_name + "_link_" + str(N)
+    def _link(self, N: int, link_config: dict, link_type: str):
+        link_name = f"{self.robot_name}_link_{N}"
         self.link_list.append(link_name)
+        self.group_link_joint[link_type].append(link_name)
         ret = Link(
             Inertial(
-                Mass(mass),
-                Inertia(I),
-                Origin(cm)
+                Mass(link_config.get("mass", 0)),
+                Inertia(link_config.get("I", [])),
+                Origin(link_config.get("cm", []))
             ),
             Visual(
                 Geometry(
-                    Mesh(filename=self.robot_package_abs_path + "/meshes/visual/" + mesh_name + ".dae")
+                    Mesh(filename=f"{self.robot_package_abs_path}/meshes/visual/{link_config['mesh_name']}.dae")
                 ),
             ),
             Collision(
                 Geometry(
-                    Mesh(filename=self.robot_package_abs_path + "/meshes/collision/" + mesh_name + ".stl")
+                    Mesh(filename=f"{self.robot_package_abs_path}/meshes/collision/{link_config['mesh_name']}.stl")
                 )
             ),
-            name= link_name
+            name=link_name
         )
         return ret
 
-    def _joint(self, N:int, origin:list, limit:list, max_effort:float, max_velocity:float, type:str, axis:list):
-        parent = self.robot_name + "_link_" + str(N - 1)
-        child = self.robot_name + "_link_" + str(N)
+    def _joint(self, N: int, joint_config: dict, link_type: str):
+        parent = f"{self.robot_name}_link_{N - 1}"
+        child = f"{self.robot_name}_link_{N}"
         if parent not in self.link_connections:
             self.link_connections[parent] = []
         self.link_connections[parent].append(child)
-        joint_name = self.robot_name + "_joint_" + str(N)
+        joint_name = f"{self.robot_name}_joint_{N}"
         self.joint_list.append(joint_name)
+        self.group_link_joint[link_type].append(joint_name)
         ret = Joint(
             Parent(link=parent),
             Child(link=child),
-            Origin(origin),
-            Axis(xyz=axis),
-            Limit(lower=limit[0], upper=limit[1], effort=max_effort, velocity=max_velocity),
-            type=type,
+            Origin(joint_config.get("origin", [])),
+            Axis(xyz=joint_config.get("axis", [])),
+            Limit(
+                lower=joint_config.get("limit", [0, 0])[0],
+                upper=joint_config.get("limit", [0, 0])[1],
+                effort=joint_config.get("max_effort", 0),
+                velocity=joint_config.get("max_velocity", 0)
+            ),
+            type=joint_config.get("type", ""),
             name=joint_name)
         return ret
 
     def _generate_robot_base_group(self):
         if self.ndof % 2 != 0:
-            print_err("The number of degrees of freedom of the robot manipulator must be even")
+            print("The number of degrees of freedom of the robot manipulator must be even")
             return Group()
+        
         ret = Group(
             Joint(
                 Origin(xyz="0 0 0", rpy="0 0 0"),
-                Parent(link=self.parent), Child(link=self.robot_name + "_link_0"), 
+                Parent(link=self.parent),
+                Child(link=f"{self.robot_name}_link_0"),
                 type="fixed",
-                name=self.parent + "_" + self.robot_name + "_joint"),
-            self._link(N=0, **self.robot_config["start_link"]),
+                name=f"{self.parent}_{self.robot_name}_joint"
+            ),
+            self._link(N=0, link_config=self.robot_config["start_link"], link_type="start_link")
         )
-        if self.ndof > 2:
-            for i in range(1, self.ndof):
-                joint = "joint_base" if i == 1 else "joint"
-                if i % 2 > 0:
-                    link_config = self.robot_config["fork_link"]
-                else:
-                    link_config = self.robot_config["main_link"]
-                ret.extend([
-                    self._joint(N=i, **link_config[joint]),
-                    self._link(N=i, **link_config["link"])
-                ])
-        else:
-            link_config = self.robot_config["fork_link"]
+
+        for i in range(1, self.ndof):
+            joint = "joint_base" if i == 1 else "joint"
+            link_type = "fork_link" if i % 2 != 0 else "main_link"
             ret.extend([
-                self._joint(N=self.ndof-1, **link_config["joint_base"]),
-                self._link(N=self.ndof-1, **link_config["link"]),
+                self._joint(N=i, joint_config=self.robot_config[link_type][joint], link_type=link_type),
+                self._link(N=i, link_config=self.robot_config[link_type]["link"], link_type=link_type)
             ])
+
+        if self.ndof <= 2:
+            link_type = "fork_link"
+            ret.extend([
+                self._joint(N=self.ndof - 1, joint_config=self.robot_config[link_type]["joint_base"],
+                            link_type=link_type),
+                self._link(N=self.ndof - 1, link_config=self.robot_config[link_type]["link"], link_type=link_type),
+            ])
+
+        link_type = "ee_link"
+        tool0_link_name = f"{self.robot_name}_link_tool0"
+        tool0_joint_name = f"{self.robot_name}_joint_tool0"
+        tool0_parent = f"{self.robot_name}_link_{self.ndof}"
+        tool0_child = f"{self.robot_name}_tool0"
         ret.extend([
-            self._joint(N=self.ndof, **self.robot_config["ee_link"]["joint"]),
-            self._link(N=self.ndof, **self.robot_config["ee_link"]["link"])
+            self._joint(N=self.ndof, joint_config=self.robot_config[link_type]["joint"], link_type=link_type),
+            self._link(N=self.ndof, link_config=self.robot_config[link_type]["link"], link_type=link_type),
+            Joint(
+                Origin(xyz="0 0 0.11", rpy="0 0 0"),
+                Parent(tool0_parent),
+                Child(tool0_child),
+                type="fixed",
+                name=tool0_joint_name
+            ),
+            Link(name=tool0_link_name)
         ])
+        self.link_list.append(tool0_link_name)
         return ret
+
     def _generate_ros2_control(self):
         ret = Group()
         for joint in self.joint_list:
             ros2_control = Ros2Control(
-                    Hardware(xmltext="ign_ros2_control/IgnitionSystem"),
-                    JointInterface(
-                        CommandInterface(
-                            Param(name="max", xmltext="1"), 
-                            Param(name="min", xmltext="-1"),
-                            name="position"),
-                        CommandInterface(
-                            Param(name="max", xmltext="1"), 
-                            Param(name="min", xmltext="-1"),
-                            name="velocity"),
-                        StateInterface(name="position"),
-                        StateInterface(name="velocity"),
-                        StateInterface(name="effort"),
-                        name = joint
-                    ),
-                    name = joint,
-                    type = "actuator"
-                )
+                Hardware(xmltext="ign_ros2_control/IgnitionSystem"),
+                JointInterface(
+                    CommandInterface(
+                        # Param(name="max", xmltext="1"),
+                        # Param(name="min", xmltext="-1"),
+                        name="position"),
+                    CommandInterface(
+                        # Param(name="max", xmltext="1"),
+                        # Param(name="min", xmltext="-1"),
+                        name="velocity"),
+                    StateInterface(name="position"),
+                    StateInterface(name="velocity"),
+                    StateInterface(name="effort"),
+                    name=joint
+                ),
+                name=joint,
+                type="actuator"
+            )
             ret.extend([ros2_control])
         return ret
 
-    def _genetate_robot_with_interface(self):
+    def _generate_robot_with_interface(self):
         rbs_arm = self._generate_robot_base_group()
         rbs_ros2_control = self._generate_ros2_control()
         robot_base = Robot(
