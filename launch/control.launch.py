@@ -1,3 +1,4 @@
+from launch.descriptions import executable
 from launch_ros.actions import Node
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
@@ -77,6 +78,16 @@ def launch_setup(context, *args, **kwargs):
         ],
         condition=IfCondition(cartesian_controllers)
     )
+
+    joint_effort_controller = Node(
+        package="controller_manager",
+        executable = "spawner",
+        namespace=namespace,
+        arguments=[
+            "joint_effort_controller",
+            "-c", namespace + "/controller_manager", "--inactive"
+        ]
+    )
    
     # force_torque_sensor_broadcaster = Node(
     #     package="controller_manager",
@@ -91,6 +102,7 @@ def launch_setup(context, *args, **kwargs):
         initial_joint_controller_spawner_stopped,
         gripper_controller,
         cartesian_motion_controller_spawner,
+        joint_effort_controller
     ]
     return nodes_to_start
 

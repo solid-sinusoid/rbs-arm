@@ -1,13 +1,12 @@
 from odio_urdf import *
-import numpy as np
 import yaml
 
 class Ros2Control(Element):
-    allowed_elements = ["Hardware", "JointInterface", "Param", "Plugin"]
+    allowed_elements = ["HardwareInterface", "JointInterface", "Param", "Plugin"]
     element_name = "ros2_control"
     required_attributes = ["name", "type"]
 
-class Hardware(Element):
+class HardwareInterface(Element):
     allowed_elements = ["Plugin"]
     element_name = "hardware"
 
@@ -72,9 +71,6 @@ class VirtualJoint(Element):
 Group.allowed_elements += [ "Ros2Control", "VirtualJoint", "PlanningGroup", "PlanningGroupState", "DisableCollision" ]
 Robot.allowed_elements += [ "Ros2Control", "VirtualJoint", "PlanningGroup", "PlanningGroupState", "DisableCollision" ]
 
-# Group.allowed_elements += ["Ros2Control"]
-# Robot.allowed_elements += ["Ros2Control"]
-
 class VerboseSafeDumper(yaml.SafeDumper):
     def ignore_aliases(self, data):
         return True
@@ -115,12 +111,3 @@ def write_yaml_abs(data, file_path):
         print(f"IOError occurred while writing the file: {e}")
     except Exception as e:
         print(f"An error occurred while writing the file: {e}")
-
-
-class Ros2ControlReconfigurator:
-    def __init__(self, robot_base):
-        self.rb = robot_base
-        self.allowed_controller_names = self.rb.robot_config["ros2_control"]["allowed_controller_names"]
-
-    def _build_controller(self):
-        pass

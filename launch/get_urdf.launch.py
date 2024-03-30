@@ -7,14 +7,14 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
 
     initial_joint_controllers_file_path = os.path.join(
-        get_package_share_directory('rbs_arm'), 'config', 'rbs_arm_controllers_gazebosim.yaml'
+        get_package_share_directory('rbs_arm'), 'config', 'rbs_arm0_controllers_gazebosim'
     )
 
     doc = xacro.process_file(os.path.join(get_package_share_directory("rbs_arm"), 'urdf', 'rbs_arm_modular.xacro'), mappings={
-        "gripper_name": "rbs-gripper",
-        "tf_prefix": "",
+        "gripper_name": "rbs_gripper",
         "hardware": "gazebo",
-        "simulation_controllers": initial_joint_controllers_file_path
+        "simulation_controllers": initial_joint_controllers_file_path,
+        "namespace": "/arm0",
     })
 
     robot_desc = doc.toprettyxml(indent='  ')

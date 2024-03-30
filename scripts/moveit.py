@@ -10,7 +10,7 @@ class MoveitReconfigurator:
             "controllers": self.rb.robot_package_abs_path + "/config/moveit/moveit_controllers.yaml",
             "joint_limits": self.rb.robot_package_abs_path + "/config/moveit/joint_limits.yaml",
             "initial_positons": self.rb.robot_package_abs_path + "/config/moveit/initial_positons.yaml",
-            "srdf": self.rb.robot_package_abs_path + "/config/moveit/" + self.rb.robot_name + ".srdf"
+            "srdf": self.rb.robot_package_abs_path + "/config/moveit/" + self.rb.name + ".srdf"
         }
 
     def _get_adjacency_matrix(self, link_connections: dict, link_names:list):
@@ -27,9 +27,9 @@ class MoveitReconfigurator:
         joint_limits = load_yaml_abs(self.moveit_config_files["joint_limits"])
         if 'joint_limits' in joint_limits:
             old_joint_names = list(joint_limits["joint_limits"].keys())
-            new_joint_names = set(self.rb.joint_list) - set(old_joint_names)
+            new_joint_names = set(self.rb.joints) - set(old_joint_names)
             
-            for old_joint, new_joint in zip(old_joint_names, self.rb.joint_list):
+            for old_joint, new_joint in zip(old_joint_names, self.rb.joints):
                 joint_limits["joint_limits"][new_joint] = joint_limits["joint_limits"].pop(old_joint)
             
             if len(new_joint_names) > 0:
@@ -69,23 +69,23 @@ class MoveitReconfigurator:
             if 'joint_trajectory_controller' in controller_manager:
                 controller = controller_manager['joint_trajectory_controller']
                 if 'joints' in controller:
-                    controller['joints'] = self.rb.joint_list
+                    controller['joints'] = self.rb.joints
         if self.update:
             write_yaml_abs(moveit_controllers, self.moveit_config_files["controllers"])
         return moveit_controllers
 
     def get_srdf(self):
-        adjm = self._get_adjacency_matrix(self.rb.link_connections, self.rb.link_list)
-        srdf = Robot(name=self.rb.robot_name)
+        adjm = self._get_adjacency_matrix(self.rb.link_connections, self.rb.links)
+        srdf = Robot(name=self.rb.name)
         plgr = PlanningGroup(
-            Chain(base_link=self.rb.link_list[0], tip_link=self.rb.link_list[-1]),
-            name=self.rb.robot_name
+            Chain(base_link=self.rb.links[0], tip_link=self.rb.links[-1]),
+            name=self.rb.name
         )
         srdf.extend([plgr])
-        for i, parent_link in enumerate(self.rb.link_list):
+        for i, parent_link in enumerate(self.rb.links):
             if parent_link in self.rb.link_connections:
                 for child_link in self.rb.link_connections[parent_link]:
-                    j = self.rb.link_list.index(child_link)
+                    j = self.rb.links.index(child_link)
                     if adjm[i, j] == 1:
                         srdf.extend([DisableCollision(link1=parent_link, link2=child_link)])
         return srdf
