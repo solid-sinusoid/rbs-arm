@@ -104,7 +104,7 @@ class RbsBuilder(RobotBuilderABC):
     def ros2_control(self, hardware: str) -> None:
         self.hardware = hardware
         self._rc.add_interface(hardware)
-        is_gripper = True if "Gripper" in self._rc.parts else False
+        is_gripper: bool = True if "Gripper" in self._rc.parts else False
         self._rc.add_controller_manager(self.robot_name, config={
             'joint_trajectory_controller': True,
             'cartesian_motion_controller': True,
@@ -114,7 +114,7 @@ class RbsBuilder(RobotBuilderABC):
         self._rc.add_part("ros2_control")
 
     def moveit(self) -> None:
-        self._rc.add_srdf()
+        self._rc.generate_moveit_config(update=True)
         self._rc.add_part("MoveIt2")
 
     def simulation(self, simulator: Optional[str] = None) -> None:
