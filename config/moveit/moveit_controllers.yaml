@@ -15,5 +15,4 @@ moveit_simple_controller_manager:
       - main1_link_joint
       - fork2_link_joint
       - ee_link_joint
-      # TODO: Configure joints bellow in launch-time for modular robot
       - rbs_gripper_rot_base_joint

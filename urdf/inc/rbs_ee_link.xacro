@@ -14,6 +14,7 @@
     </joint>
 
     <joint name="${tf_prefix}tool0_joint" type="fixed">
+      <!-- <limit lower="0.00000" upper="0.00000" effort="0.00000" velocity="0.00000" /> -->
       <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.11000" />
       <parent link="${tf_prefix}ee_link" />
       <child link="${tf_prefix}tool0" />

@@ -6,6 +6,7 @@
     <xacro:include filename="$(find rbs_arm)/urdf/inc/rbs_ee_link.xacro" />
     <xacro:include filename="$(find rbs_arm)/urdf/inc/rbs_fork_link.xacro" />
     <xacro:include filename="$(find rbs_arm)/urdf/inc/rbs_main_link.xacro" />
+    <xacro:include filename="$(find rbs_arm)/urdf/sensors.xacro"/>
 
     <!-- BEGIN robot description  -->
     <xacro:base_link parent="${parent}" tf_prefix="${tf_prefix}" hardware="${hardware}">
@@ -29,8 +30,10 @@
       </xacro:rbs_gripper>
     </xacro:if>
 
+
     <!-- If hardware == gazebo so insert additional parameters for it -->
     <xacro:if value="${hardware=='gazebo'}">
+      <xacro:rbs_fts name="fts_sensor" tf_prefix="${tf_prefix}" link="${tf_prefix}tool0"/>
       <gazebo>
         <plugin filename="libign_ros2_control-system.so"
           name="ign_ros2_control::IgnitionROS2ControlPlugin">

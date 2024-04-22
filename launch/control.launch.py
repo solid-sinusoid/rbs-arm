@@ -74,7 +74,18 @@ def launch_setup(context, *args, **kwargs):
         namespace=namespace,
         arguments=[
             "cartesian_motion_controller",
-            "-c", namespace + "/controller_manager",
+            "-c", namespace + "/controller_manager"
+        ],
+        condition=IfCondition(cartesian_controllers)
+    )
+
+    cartesian_force_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        namespace=namespace,
+        arguments=[
+            "cartesian_force_controller",
+            "-c", namespace + "/controller_manager", "--inactive"
         ],
         condition=IfCondition(cartesian_controllers)
     )
@@ -88,13 +99,17 @@ def launch_setup(context, *args, **kwargs):
             "-c", namespace + "/controller_manager", "--inactive"
         ]
     )
+
+    force_torque_sensor_broadcaster = Node(
+        package="controller_manager",
+        executable = "spawner",
+        namespace=namespace,
+        arguments=[
+            "force_torque_sensor_broadcaster",
+            "-c", namespace + "/controller_manager"
+        ]
+    )
    
-    # force_torque_sensor_broadcaster = Node(
-    #     package="controller_manager",
-    #     executable="spawner",
-    #     arguments=["force_torque_sensor_broadcaster", "-c", "/controller_manager"]
-    # )
-    
     nodes_to_start = [
         # control_node,
         joint_state_broadcaster_spawner,
@@ -102,7 +117,9 @@ def launch_setup(context, *args, **kwargs):
         initial_joint_controller_spawner_stopped,
         gripper_controller,
         cartesian_motion_controller_spawner,
-        joint_effort_controller
+        cartesian_force_controller_spawner,
+        joint_effort_controller,
+        force_torque_sensor_broadcaster
     ]
     return nodes_to_start
 

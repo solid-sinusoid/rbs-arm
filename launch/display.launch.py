@@ -3,7 +3,7 @@ from launch.actions import DeclareLaunchArgument
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-
+from rbs_arm import RbsBuilder
 
 def generate_launch_description():
     declared_arguments = []
@@ -36,14 +36,19 @@ def generate_launch_description():
     description_package = LaunchConfiguration("description_package")
     description_file = LaunchConfiguration("description_file")
 
-    robot_description_content = Command(
-        [
-            PathJoinSubstitution([FindExecutable(name="xacro")]),
-            " ",
-            PathJoinSubstitution([FindPackageShare(description_package), "urdf", description_file]),
-        ]
-    )
-    robot_description = {"robot_description": robot_description_content}
+    # robot_description_content = Command(
+    #     [
+    #         PathJoinSubstitution([FindExecutable(name="xacro")]),
+    #         " ",
+    #         PathJoinSubstitution([FindPackageShare(description_package), "urdf", description_file]),
+    #     ]
+    # )
+    robot = RbsBuilder(4, "arm0", "world")
+    robot.base()
+    # robot.gripper()
+    robot.ros2_control("gazebo")
+    robot.moveit()
+    robot_description = {"robot_description": robot.robot.urdf().urdf()}
 
     rviz_config_file = PathJoinSubstitution(
         [FindPackageShare(description_package), "config", "view_robot.rviz"]

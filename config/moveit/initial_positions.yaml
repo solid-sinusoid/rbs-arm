@@ -7,3 +7,4 @@ initial_positions:
   fork2_link_joint: 0
   main0_link_joint: 0
   main1_link_joint: 0
+  rbs_gripper_rot_base_joint: 0

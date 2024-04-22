@@ -7,7 +7,7 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
 
     initial_joint_controllers_file_path = os.path.join(
-        get_package_share_directory('rbs_arm'), 'config', 'rbs_arm0_controllers_gazebosim'
+        get_package_share_directory('rbs_arm'), 'config', 'rbs_arm0_controllers.yaml'
     )
 
     doc = xacro.process_file(os.path.join(get_package_share_directory("rbs_arm"), 'urdf', 'rbs_arm_modular.xacro'), mappings={

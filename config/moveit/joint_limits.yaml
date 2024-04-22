@@ -38,3 +38,8 @@ joint_limits:
     max_velocity: 0.52000000000000002
     has_acceleration_limits: false
     max_acceleration: 0
+  rbs_gripper_rot_base_joint:
+    has_velocity_limits: true
+    max_velocity: 0.52000000000000002
+    has_acceleration_limits: false
+    max_acceleration: 0

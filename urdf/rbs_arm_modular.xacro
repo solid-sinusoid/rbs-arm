@@ -6,10 +6,18 @@
   <xacro:arg name="tf_prefix" default="" />
   <xacro:arg name="namespace" default="arm0"/>
 
+  <xacro:arg name="x" default="0.0" />
+  <xacro:arg name="y" default="0.0" />
+  <xacro:arg name="z" default="0.0" />
+
+  <xacro:arg name="roll" default="0.0" />
+  <xacro:arg name="pitch" default="0.0" />
+  <xacro:arg name="yaw" default="0.0" />
+
   <xacro:include filename="$(find rbs_arm)/urdf/rbs_arm_modular_macro.xacro" />
   <link name="world" />
   <xacro:rbs_arm namespace="$(arg namespace)" parent="world" tf_prefix="$(arg tf_prefix)" hardware="$(arg hardware)"
     gripper_name="$(arg gripper_name)" controllers="$(arg simulation_controllers)">
-    <origin xyz="0 0 0" rpy="0 0 0" />
+    <origin xyz="$(arg x) $(arg y) $(arg z)" rpy="$(arg roll) $(arg pitch) $(arg yaw)" />
   </xacro:rbs_arm>
 </robot>

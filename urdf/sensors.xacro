@@ -71,14 +71,15 @@
     </ros2_control>
 
     <gazebo reference="${tf_prefix}${link}_joint">
+        <preserveFixedJoint>true</preserveFixedJoint>
         <sensor name="${tf_prefix}${name}" type="force_torque">
           <always_on>true</always_on>
           <update_rate>50</update_rate>
           <visualize>true</visualize>
-          <topic>ft_data</topic>
+          <topic>${tf_prefix}ft_data</topic>
           <force_torque>
             <frame>sensor</frame>
-            <measure_direction>parent_to_child</measure_direction>
+            <measure_direction>child_to_parent</measure_direction>
           </force_torque>
         </sensor>
       </gazebo>

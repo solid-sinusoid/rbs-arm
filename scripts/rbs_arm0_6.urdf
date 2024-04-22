@@ -1,0 +1,369 @@
+<?xml version="1.0"?>
+<robot  name="arm0" >
+ <ros2_control  type="actuator"  name="0_interface" >
+  <hardware >
+   <plugin >ign_ros2_control/IgnitionSystem</plugin>
+  </hardware>
+  <joint  name="arm0_start_link_0_arm0_fork_link_1" >
+   <command_interface  name="position" />
+   <command_interface  name="velocity" />
+   <state_interface  name="position" />
+   <state_interface  name="velocity" />
+   <state_interface  name="effort" />
+  </joint>
+ </ros2_control>
+ <ros2_control  type="actuator"  name="1_interface" >
+  <hardware >
+   <plugin >ign_ros2_control/IgnitionSystem</plugin>
+  </hardware>
+  <joint  name="arm0_fork_link_1_arm0_main_link_2" >
+   <command_interface  name="position" />
+   <command_interface  name="velocity" />
+   <state_interface  name="position" />
+   <state_interface  name="velocity" />
+   <state_interface  name="effort" />
+  </joint>
+ </ros2_control>
+ <ros2_control  type="actuator"  name="2_interface" >
+  <hardware >
+   <plugin >ign_ros2_control/IgnitionSystem</plugin>
+  </hardware>
+  <joint  name="arm0_main_link_2_arm0_fork_link_3" >
+   <command_interface  name="position" />
+   <command_interface  name="velocity" />
+   <state_interface  name="position" />
+   <state_interface  name="velocity" />
+   <state_interface  name="effort" />
+  </joint>
+ </ros2_control>
+ <ros2_control  type="actuator"  name="3_interface" >
+  <hardware >
+   <plugin >ign_ros2_control/IgnitionSystem</plugin>
+  </hardware>
+  <joint  name="arm0_fork_link_3_arm0_main_link_4" >
+   <command_interface  name="position" />
+   <command_interface  name="velocity" />
+   <state_interface  name="position" />
+   <state_interface  name="velocity" />
+   <state_interface  name="effort" />
+  </joint>
+ </ros2_control>
+ <ros2_control  type="actuator"  name="4_interface" >
+  <hardware >
+   <plugin >ign_ros2_control/IgnitionSystem</plugin>
+  </hardware>
+  <joint  name="arm0_main_link_4_arm0_fork_link_5" >
+   <command_interface  name="position" />
+   <command_interface  name="velocity" />
+   <state_interface  name="position" />
+   <state_interface  name="velocity" />
+   <state_interface  name="effort" />
+  </joint>
+ </ros2_control>
+ <ros2_control  type="actuator"  name="5_interface" >
+  <hardware >
+   <plugin >ign_ros2_control/IgnitionSystem</plugin>
+  </hardware>
+  <joint  name="arm0_fork_link_5_arm0_ee_link_6" >
+   <command_interface  name="position" />
+   <command_interface  name="velocity" />
+   <state_interface  name="position" />
+   <state_interface  name="velocity" />
+   <state_interface  name="effort" />
+  </joint>
+ </ros2_control>
+ <ros2_control  type="actuator"  name="6_interface" >
+  <hardware >
+   <plugin >ign_ros2_control/IgnitionSystem</plugin>
+  </hardware>
+  <joint  name="arm0_base_0_arm0_rot_1" >
+   <command_interface  name="position" />
+   <command_interface  name="velocity" />
+   <state_interface  name="position" />
+   <state_interface  name="velocity" />
+   <state_interface  name="effort" />
+  </joint>
+ </ros2_control>
+ <gazebo >
+  <plugin  name="ign_ros2_control::IgnitionROS2ControlPlugin"  filename="libign_ros2_control-system.so" >
+   <parameters >/home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/config/arm0.yaml</parameters>
+   <ros >
+    <namespace >/arm0</namespace>
+   </ros>
+  </plugin>
+ </gazebo>
+ <link  name="world" />
+ <joint  type="fixed"  name="world_arm0_start_link_0" >
+  <parent  link="world" />
+  <child  link="arm0_start_link_0" />
+  <origin  xyz="0 0 0"  rpy="0 0 0" />
+ </joint>
+ <link  name="arm0_start_link_0" >
+  <inertial >
+   <mass  value="1.88031044620482" />
+   <inertia  iyy="0.00337962410057753"  ixz="-4.74990755448368e-06"  iyz="-2.3099255620051e-05"  ixx="0.00503302470272442"  izz="0.00405858207282473"  ixy="0.000343817346410954" />
+   <origin  xyz="-0.000297002857922682 0.0964721185617698 -0.000361033370053684" />
+  </inertial>
+  <visual >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/start_link.dae" />
+   </geometry>
+  </visual>
+  <collision >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/start_link.stl" />
+   </geometry>
+  </collision>
+ </link>
+ <joint  type="revolute"  name="arm0_start_link_0_arm0_fork_link_1" >
+  <parent  link="arm0_start_link_0" />
+  <child  link="arm0_fork_link_1" />
+  <origin  xyz="0.0 0.0 0.17833"  rpy="0.0 0.0 0.0" />
+  <axis  xyz="0 0 1" />
+  <limit  upper="3.14159"  velocity="0.52"  lower="-3.14159"  effort="78" />
+ </joint>
+ <link  name="arm0_fork_link_1" >
+  <inertial >
+   <mass  value="1.88031044620482" />
+   <inertia  iyy="0.00135500487881796"  ixz="-4.40871314563273e-05"  iyz="-3.19001462979333e-05"  ixx="0.00147695259043549"  izz="0.00087582892706912"  ixy="-2.66894744420299e-05" />
+   <origin  xyz="-9.7531539777207e-06 -0.000888494418875867 0.0342332199538358"  rpy="0.0 0.0 0.0" />
+  </inertial>
+  <visual >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/fork_link.dae" />
+   </geometry>
+  </visual>
+  <collision >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/fork_link.stl" />
+   </geometry>
+  </collision>
+ </link>
+ <joint  type="revolute"  name="arm0_fork_link_1_arm0_main_link_2" >
+  <parent  link="arm0_fork_link_1" />
+  <child  link="arm0_main_link_2" />
+  <origin  xyz="0.1 0.0 0.094"  rpy="0.0 0.0 0.0" />
+  <axis  xyz="0 1 0" />
+  <limit  upper="3.14159"  velocity="0.52"  lower="-1.5708"  effort="78" />
+ </joint>
+ <link  name="arm0_main_link_2" >
+  <inertial >
+   <mass  value="1.88031044620482" />
+   <inertia  iyy="0.00135500487881796"  ixz="-4.40871314563273e-05"  iyz="-3.19001462979333e-05"  ixx="0.00147695259043549"  izz="0.00087582892706912"  ixy="-2.66894744420299e-05" />
+   <origin  xyz="-9.7531539777207e-06 -0.000888494418875867 0.0342332199538358"  rpy="0.0 0.0 0.0" />
+  </inertial>
+  <visual >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/main_link.dae" />
+   </geometry>
+  </visual>
+  <collision >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/main_link.stl" />
+   </geometry>
+  </collision>
+ </link>
+ <joint  type="revolute"  name="arm0_main_link_2_arm0_fork_link_3" >
+  <parent  link="arm0_main_link_2" />
+  <child  link="arm0_fork_link_3" />
+  <origin  xyz="0.0 0.0 0.133"  rpy="0.0 0.0 0.0" />
+  <axis  xyz="0 0 1" />
+  <limit  upper="3.14159"  velocity="0.52"  lower="-3.14159"  effort="78" />
+ </joint>
+ <link  name="arm0_fork_link_3" >
+  <inertial >
+   <mass  value="1.88031044620482" />
+   <inertia  iyy="0.00135500487881796"  ixz="-4.40871314563273e-05"  iyz="-3.19001462979333e-05"  ixx="0.00147695259043549"  izz="0.00087582892706912"  ixy="-2.66894744420299e-05" />
+   <origin  xyz="-9.7531539777207e-06 -0.000888494418875867 0.0342332199538358"  rpy="0.0 0.0 0.0" />
+  </inertial>
+  <visual >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/fork_link.dae" />
+   </geometry>
+  </visual>
+  <collision >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/fork_link.stl" />
+   </geometry>
+  </collision>
+ </link>
+ <joint  type="revolute"  name="arm0_fork_link_3_arm0_main_link_4" >
+  <parent  link="arm0_fork_link_3" />
+  <child  link="arm0_main_link_4" />
+  <origin  xyz="0.1 0.0 0.094"  rpy="0.0 0.0 0.0" />
+  <axis  xyz="0 1 0" />
+  <limit  upper="3.14159"  velocity="0.52"  lower="-1.5708"  effort="78" />
+ </joint>
+ <link  name="arm0_main_link_4" >
+  <inertial >
+   <mass  value="1.88031044620482" />
+   <inertia  iyy="0.00135500487881796"  ixz="-4.40871314563273e-05"  iyz="-3.19001462979333e-05"  ixx="0.00147695259043549"  izz="0.00087582892706912"  ixy="-2.66894744420299e-05" />
+   <origin  xyz="-9.7531539777207e-06 -0.000888494418875867 0.0342332199538358"  rpy="0.0 0.0 0.0" />
+  </inertial>
+  <visual >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/main_link.dae" />
+   </geometry>
+  </visual>
+  <collision >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/main_link.stl" />
+   </geometry>
+  </collision>
+ </link>
+ <joint  type="revolute"  name="arm0_main_link_4_arm0_fork_link_5" >
+  <parent  link="arm0_main_link_4" />
+  <child  link="arm0_fork_link_5" />
+  <origin  xyz="0.0 0.0 0.133"  rpy="0.0 0.0 0.0" />
+  <axis  xyz="0 0 1" />
+  <limit  upper="3.14159"  velocity="0.52"  lower="-3.14159"  effort="78" />
+ </joint>
+ <link  name="arm0_fork_link_5" >
+  <inertial >
+   <mass  value="1.88031044620482" />
+   <inertia  iyy="0.00135500487881796"  ixz="-4.40871314563273e-05"  iyz="-3.19001462979333e-05"  ixx="0.00147695259043549"  izz="0.00087582892706912"  ixy="-2.66894744420299e-05" />
+   <origin  xyz="-9.7531539777207e-06 -0.000888494418875867 0.0342332199538358"  rpy="0.0 0.0 0.0" />
+  </inertial>
+  <visual >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/fork_link.dae" />
+   </geometry>
+  </visual>
+  <collision >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/fork_link.stl" />
+   </geometry>
+  </collision>
+ </link>
+ <joint  type="revolute"  name="arm0_fork_link_5_arm0_ee_link_6" >
+  <parent  link="arm0_fork_link_5" />
+  <child  link="arm0_ee_link_6" />
+  <origin  xyz="0.1 0.0 0.094"  rpy="0.0 0.0 0.0" />
+  <axis  xyz="0 1 0" />
+  <limit  upper="3.14159"  velocity="0.52"  lower="-1.5708"  effort="78" />
+ </joint>
+ <link  name="arm0_ee_link_6" >
+  <inertial >
+   <mass  value="1.88031044620482" />
+   <inertia  iyy="0.00135500487881796"  ixz="-4.40871314563273e-05"  iyz="-3.19001462979333e-05"  ixx="0.00147695259043549"  izz="0.00087582892706912"  ixy="-2.66894744420299e-05" />
+   <origin  xyz="-9.7531539777207e-06 -0.000888494418875867 0.0342332199538358"  rpy="0.0 0.0 0.0" />
+  </inertial>
+  <visual >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/ee_link.dae" />
+   </geometry>
+  </visual>
+  <collision >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/ee_link.stl" />
+   </geometry>
+  </collision>
+ </link>
+ <joint  type="fixed"  name="arm0_ee_link_6_arm0_tool0" >
+  <parent  link="arm0_ee_link_6" />
+  <child  link="arm0_tool0" />
+  <origin  xyz="0.0 0.0 0.11"  rpy="0.0 0.0 0.0" />
+ </joint>
+ <link  name="arm0_tool0" />
+ <joint  type="fixed"  name="arm0_tool0_arm0_base_0" >
+  <parent  link="arm0_tool0" />
+  <child  link="arm0_base_0" />
+  <origin  xyz="0 0 0"  rpy="0 0 0" />
+ </joint>
+ <link  name="arm0_base_0" >
+  <inertial >
+   <mass  value="1.13983632906086" />
+   <inertia  iyy="0.000717388573992299"  ixz="2.62750043451545e-06"  iyz="-2.95426438182787e-05"  ixx="0.00107738806534129"  izz="0.00115777179755934"  ixy="-1.09841172461737e-05" />
+   <origin  xyz="0.000364704367134063 0.0336387482840125 0.0593891203954369"  rpy="0 0 0" />
+  </inertial>
+  <visual >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/visual/base.dae" />
+   </geometry>
+  </visual>
+  <collision >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/collision/base.stl" />
+   </geometry>
+  </collision>
+ </link>
+ <joint  type="revolute"  name="arm0_base_0_arm0_rot_1" >
+  <parent  link="arm0_base_0" />
+  <child  link="arm0_rot_1" />
+  <origin  xyz="0 0 0.10861"  rpy="0 0 0" />
+  <axis  xyz="0 0 1" />
+  <limit  upper="3.14159"  velocity="0.52"  lower="-3.14159"  effort="78" />
+ </joint>
+ <link  name="arm0_rot_1" >
+  <inertial >
+   <mass  value="0.161003401535982" />
+   <inertia  iyy="0.000105515893695012"  ixz="1.74608448389267e-14"  iyz="-2.03282362854432e-14"  ixx="0.00011089089949771"  izz="0.000206912001661452"  ixy="5.01335040610636e-06" />
+   <origin  xyz="0.0 0.0 0.00775394473595793"  rpy="0 0 0" />
+  </inertial>
+  <visual >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/visual/rotor.dae" />
+   </geometry>
+  </visual>
+  <collision >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/collision/rotor.stl" />
+   </geometry>
+  </collision>
+ </link>
+ <link  name="arm0_l_finger_2" >
+  <inertial >
+   <mass  value="0.0601996441483964" />
+   <inertia  iyy="7.89886367868258e-05"  ixz="1.81029223490065e-05"  iyz="1.20542845942065e-05"  ixx="4.18533281165612e-05"  izz="5.16740841307935e-05"  ixy="-7.11657995951147e-06" />
+   <origin  xyz="0.00399878118534129 0.0187296413885176 -0.0777776233934166"  rpy="0 0 0" />
+  </inertial>
+  <visual >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/visual/finger.dae" />
+   </geometry>
+  </visual>
+  <collision >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/collision/finger.stl" />
+   </geometry>
+  </collision>
+ </link>
+ <joint  type="prismatic"  name="arm0_rot_1_arm0_l_finger_2" >
+  <parent  link="arm0_rot_1" />
+  <child  link="arm0_l_finger_2" />
+  <origin  xyz="0 0 0.1071"  rpy="0 0 1.5708" />
+  <axis  xyz="-1 0 0" />
+  <limit  upper="0.064"  velocity="0.53"  lower="0"  effort="10" />
+  <mimic  multiplier="1"  joint="arm0_rot_1_arm0_r_finger_3" />
+ </joint>
+ <link  name="arm0_r_finger_3" >
+  <inertial >
+   <mass  value="0.0601996441483964" />
+   <inertia  iyy="7.89886367868258e-05"  ixz="1.81029223490065e-05"  iyz="1.20542845942065e-05"  ixx="4.18533281165612e-05"  izz="5.16740841307935e-05"  ixy="-7.11657995951147e-06" />
+   <origin  xyz="0.00399878118534129 0.0187296413885176 -0.0777776233934166"  rpy="0 0 0" />
+  </inertial>
+  <visual >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/visual/finger.dae" />
+   </geometry>
+  </visual>
+  <collision >
+   <geometry >
+    <mesh  filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/collision/finger.stl" />
+   </geometry>
+  </collision>
+ </link>
+ <joint  type="prismatic"  name="arm0_rot_1_arm0_r_finger_3" >
+  <parent  link="arm0_rot_1" />
+  <child  link="arm0_r_finger_3" />
+  <origin  xyz="0 0 0.1071"  rpy="0 0 -1.5708" />
+  <axis  xyz="-1 0 0" />
+  <limit  upper="0.064"  velocity="0.53"  lower="0"  effort="10" />
+ </joint>
+ <joint  type="fixed"  name="arm0_rot_1_arm0_grasp_point" >
+  <parent  link="arm0_rot_1" />
+  <child  link="arm0_grasp_point" />
+  <origin  xyz="0 0 0.09139"  rpy="0 0 0" />
+ </joint>
+ <link  name="arm0_grasp_point" />
+</robot>
