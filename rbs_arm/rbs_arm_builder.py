@@ -40,15 +40,7 @@ class RbsBuilder(RobotBuilderABC):
         self._rc.add(joint0)
         self._rc.add(link0)
 
-        for i in range(1, self.ndof):
-            joint = "joint_base" if i == 1 else "joint"
-            link_name = "fork_link" if i % 2 != 0 else "main_link"
-            linkr = LinkNode(i, self.robot_name, self._rc.robot_config[link_name]["link"], 
-                             link_name, self._rc.robot_package_abs_path)
-            jointr = JointNode(i, self._rc.links[-1].name, 
-                               linkr.name, joint_config=self._rc.robot_config[link_name][joint])
-            self._rc.add(jointr)
-            self._rc.add(linkr)
+
 
         if self.ndof <= 2:
             link_name = "fork_link"
@@ -60,6 +52,16 @@ class RbsBuilder(RobotBuilderABC):
                                linkr.name, joint_config=self._rc.robot_config[link_name]["joint_base"])
             self._rc.add(jointr)
             self._rc.add(linkr)
+        else:
+            for i in range(1, self.ndof):
+                joint = "joint_base" if i == 1 else "joint"
+                link_name = "fork_link" if i % 2 != 0 else "main_link"
+                linkr = LinkNode(i, self.robot_name, self._rc.robot_config[link_name]["link"], 
+                                 link_name, self._rc.robot_package_abs_path)
+                jointr = JointNode(i, self._rc.links[-1].name, 
+                                   linkr.name, joint_config=self._rc.robot_config[link_name][joint])
+                self._rc.add(jointr)
+                self._rc.add(linkr)
 
         linkr = LinkNode(self.ndof, self.robot_name,
                          self._rc.robot_config["ee_link"]["link"], "ee_link",
