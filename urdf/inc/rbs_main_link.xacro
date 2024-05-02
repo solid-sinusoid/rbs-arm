@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="main_link" params="tf_prefix parent name hardware">
+  <xacro:macro name="main_link" params="tf_prefix parent name hardware p d">
 
     <xacro:include filename="$(find rbs_arm)/urdf/inc/joint_hardware.xacro" />
     <xacro:include filename="$(find rbs_arm)/urdf/inc/materials.xacro" />
@@ -38,7 +38,7 @@
     </link>
 
     <xacro:joint_hardware joint_name="${tf_prefix}${name}_joint" hardware="${hardware}"
-      p="100000" d="0.2" />
+      p="${p}" d="${d}" />
     <xacro:rbs_materials link_name="${tf_prefix}${name}" link_type="main_link" />
 
   </xacro:macro>

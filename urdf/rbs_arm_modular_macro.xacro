@@ -12,13 +12,19 @@
     <xacro:base_link parent="${parent}" tf_prefix="${tf_prefix}" hardware="${hardware}">
       <xacro:insert_block name="origin" />
     </xacro:base_link>
-    <xacro:fork_link parent="base_link"  name="fork0_link" tf_prefix="${tf_prefix}" hardware="${hardware}" />
-    <xacro:main_link parent="fork0_link" name="main0_link" tf_prefix="${tf_prefix}" hardware="${hardware}" />
-    <xacro:fork_link parent="main0_link" name="fork1_link" tf_prefix="${tf_prefix}" hardware="${hardware}" />
-    <xacro:main_link parent="fork1_link" name="main1_link" tf_prefix="${tf_prefix}" hardware="${hardware}" />
-    <xacro:fork_link parent="main1_link" name="fork2_link" tf_prefix="${tf_prefix}" hardware="${hardware}" />
+    <xacro:fork_link parent="base_link"  name="fork0_link" tf_prefix="${tf_prefix}" hardware="${hardware}" 
+      p="10000" d="0.2"  />
+    <xacro:main_link parent="fork0_link" name="main0_link" tf_prefix="${tf_prefix}" hardware="${hardware}" 
+      p="10000" d="0.2"/>
+    <xacro:fork_link parent="main0_link" name="fork1_link" tf_prefix="${tf_prefix}" hardware="${hardware}" 
+      p="10000" d="0.2"/>
+    <xacro:main_link parent="fork1_link" name="main1_link" tf_prefix="${tf_prefix}" hardware="${hardware}" 
+      p="1000" d="0.2"/>
+    <xacro:fork_link parent="main1_link" name="fork2_link" tf_prefix="${tf_prefix}" hardware="${hardware}" 
+      p="100" d="0.2"/>
     <!-- ee link also contain tool0-->
-    <xacro:ee_link parent="fork2_link" tf_prefix="${tf_prefix}" hardware="${hardware}" />
+    <xacro:ee_link parent="fork2_link" tf_prefix="${tf_prefix}" hardware="${hardware}" 
+      p="20" d="0.2"/>
     <!-- END robot description -->
 
     <!-- Insert gripper in robot description if exist -->

@@ -2,6 +2,14 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:macro name="rbs_materials" params="link_name link_type">
     <gazebo reference="${link_name}">
+      <soft_contact>
+        <dart>
+          <bone_attachment>100</bone_attachment>
+          <stiffness>100</stiffness>
+          <damping>10</damping>
+          <flesh_mass_fraction>0.050000000000000003</flesh_mass_fraction>
+        </dart>
+      </soft_contact>
       <visual>
         <material>
           <diffuse>0.8 0.8 0.8 1</diffuse>
