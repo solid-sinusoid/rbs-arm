@@ -73,7 +73,7 @@ def launch_setup(context, *args, **kwargs):
         namespace=namespace,
         arguments=[
             "cartesian_motion_controller",
-            "-c", namespace + "/controller_manager"
+            "-c", namespace + "/controller_manager", "--inactive"
         ],
         condition=IfCondition(cartesian_controllers)
     )
@@ -116,9 +116,9 @@ def launch_setup(context, *args, **kwargs):
         initial_joint_controller_spawner_stopped,
         gripper_controller,
         cartesian_motion_controller_spawner,
-        # cartesian_force_controller_spawner,
+        cartesian_force_controller_spawner,
         joint_effort_controller,
-        # force_torque_sensor_broadcaster
+        force_torque_sensor_broadcaster
     ]
     return nodes_to_start
 

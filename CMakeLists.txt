@@ -16,6 +16,7 @@ DESTINATION share/${PROJECT_NAME})
 
 install(PROGRAMS
   scripts/test.py
+  scripts/ee_listener.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

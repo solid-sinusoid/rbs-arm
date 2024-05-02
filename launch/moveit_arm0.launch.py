@@ -68,10 +68,14 @@ def generate_launch_description():
 
     robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
     use_sim_time = {"use_sim_time": use_sim_time}
-    robot_description_kinematics = os.path.join(
-        get_package_share_directory("rbs_arm"), 
-        "config",
-        "kinematics.yaml")
+    # robot_description_kinematics = os.path.join(
+    #     get_package_share_directory("rbs_arm"), 
+    #     "config",
+    #     "kinematics.yaml")
+
+    kinematics_yaml = load_yaml("rbs_arm", "config/kinematics.yaml")
+
+    robot_description_kinematics = {"robot_description_kinematics": kinematics_yaml}
     
     # Planning Configuration
     ompl_planning_pipeline_config = {

@@ -10,11 +10,13 @@ class RbsBuilder(RobotBuilderABC):
     def __init__(self, ndof: int, 
                  robot_name: str, 
                  parent: str,
+                 pose: list[float],
                  gripper_package: Optional[str] = None) -> None:
         self.ndof = ndof
         self.robot_name = robot_name
         self.robot_type = "rbs_arm"
         self.gripper_package = gripper_package
+        self.pose = pose
         self.hardware = ""
         self.reset(robot_name, parent)
 
@@ -36,7 +38,7 @@ class RbsBuilder(RobotBuilderABC):
             self._rc.add(link00)
         link0 = LinkNode(0, self.robot_name, 
                          self._rc.robot_config["start_link"], "start_link", self._rc.robot_package_abs_path)
-        joint0 = JointNode(0, self._rc.parent, link0.name, joint_config={"type": "fixed"})
+        joint0 = JointNode(0, self._rc.parent, link0.name, joint_config={"type": "fixed", "origin": self.pose})
         self._rc.add(joint0)
         self._rc.add(link0)
 

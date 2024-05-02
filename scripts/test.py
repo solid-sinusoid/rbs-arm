@@ -1,18 +1,29 @@
 from rbs_arm import RbsBuilder
 
-ndof = 6
-robot_name = "arm0"
+ndofs = [2, 4, 6, 8, 10, 100]
+gripper_names = ["rbs_gripper", None]  # Сначала с гриппером, затем без
 
-rbs_gen = RbsBuilder(ndof=6, robot_name="arm0", parent="world", gripper_package="rbs_gripper")
-rbs_gen.base()
-rbs_gen.gripper()
-rbs_gen.ros2_control("gazebo")
-rbs_gen.simulation()
-rbs_gen.moveit()
-urdf = rbs_gen.robot.urdf()
-srdf = rbs_gen.robot.srdf()
-print(srdf)
+for gripper_name in gripper_names:
+    for ndof in ndofs:
+        robot_name = "arm0"
+        pose = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
-with open(f"rbs_{robot_name}_{ndof}.urdf", 'w') as xfile:
-    xfile.write(urdf.urdf())
-    xfile.close()
+        rbs_gen = RbsBuilder(ndof=ndof, robot_name="arm0", parent="world", pose=pose, gripper_package=gripper_name)
+        rbs_gen.base()
+        if gripper_name:
+            rbs_gen.gripper()
+        rbs_gen.ros2_control("gazebo")
+        rbs_gen.simulation()
+        rbs_gen.moveit()
+        urdf = rbs_gen.robot.urdf()
+        srdf = rbs_gen.robot.srdf()
+        print(srdf)
+        filename = ""
+
+        if "Gripper" in rbs_gen.robot.parts:
+            filename = f"rbs_{robot_name}_{ndof}_G.urdf"
+        else:
+            filename = f"rbs_{robot_name}_{ndof}.urdf"
+
+        with open(filename, 'w') as xfile:
+            xfile.write(urdf.urdf())
