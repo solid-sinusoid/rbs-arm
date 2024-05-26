@@ -95,6 +95,9 @@ cartesian_force_controller:
     robot_base_link: "base_link"
     ft_sensor_ref_link: "tool0"
     ft_sensor_node_name: "force_torque_sensor_broadcaster"
+    # ik_solver: "selectively_damped_least_squares"
+    # ik_solver: "jacobian_transpose"
+    # ik_solver: "damped_least_squares"
     joints:
       - fork0_link_joint
       - main0_link_joint
@@ -110,7 +113,9 @@ cartesian_force_controller:
       - velocity
 
     solver:
-        error_scale: 0.3
+        error_scale: 0.5
+        publish_state_feedback: True
+        link_mass: 0.5
 
     pd_gains:
         trans_x: {p: 0.05}

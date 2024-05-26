@@ -107,7 +107,7 @@ def generate_launch_description():
     move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
-        namespace=namespace,
+        # namespace=namespace,
         output="screen",
         parameters=[
             robot_description,

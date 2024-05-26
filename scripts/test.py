@@ -1,6 +1,6 @@
 from rbs_arm import RbsBuilder
 
-ndofs = [2, 4, 6, 8, 10, 100]
+ndofs = [2, 4, 6]
 gripper_names = ["rbs_gripper", None]  # Сначала с гриппером, затем без
 
 for gripper_name in gripper_names:
@@ -22,8 +22,13 @@ for gripper_name in gripper_names:
 
         if "Gripper" in rbs_gen.robot.parts:
             filename = f"rbs_{robot_name}_{ndof}_G.urdf"
+            filename_srdf = f"rbs_{robot_name}_{ndof}_G.srdf"
         else:
             filename = f"rbs_{robot_name}_{ndof}.urdf"
+            filename_srdf = f"rbs_{robot_name}_{ndof}.srdf"
 
         with open(filename, 'w') as xfile:
             xfile.write(urdf.urdf())
+
+        with open(filename_srdf, 'w') as xfile:
+            xfile.write(srdf.urdf())

@@ -65,7 +65,7 @@ def generate_launch_description():
         [FindPackageShare("rbs_arm"), "config", "rbs_arm_controllers_gazebosim.yaml"]
     )
 
-    ndof = 6
+    ndof = 4
     robot_name = "arm0"
     # namespace = "/" + robot_name
     namespace = ""
@@ -134,7 +134,7 @@ def generate_launch_description():
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        namespace=namespace,
+        # namespace=namespace,
         remappings=remappings,
         output="both",
         parameters=[robot_description],
@@ -158,7 +158,7 @@ def generate_launch_description():
         # namespace=namespace,
         remappings=[
         ],
-        arguments=["-d", rviz_config_file],
+        arguments=["-d", ""],
         parameters=[
             ompl_planning_pipeline_config,
             kinematics_yaml,
