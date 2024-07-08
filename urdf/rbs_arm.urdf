@@ -7,7 +7,7 @@
 <robot name="rbs_arm">
   <link name="world"/>
   <joint name="base_link_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
     <parent link="world"/>
     <child link="base_link"/>
   </joint>
@@ -50,7 +50,7 @@
     </visual>
   </gazebo>
   <joint name="fork0_link_joint" type="revolute">
-    <limit effort="78" lower="-3.14159" upper="3.14159" velocity="0.52"/>
+    <limit effort="78" lower="-6.14159" upper="6.14159" velocity="0.52"/>
     <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.17833"/>
     <parent link="base_link"/>
     <child link="fork0_link"/>
@@ -60,7 +60,7 @@
     <collision name="fork0_link_collision">
       <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000"/>
       <geometry>
-        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/fork.stl" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/fork_link.stl" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </collision>
     <inertial>
@@ -71,7 +71,7 @@
     <visual name="fork0_link_visual">
       <origin rpy="0.00000 -0.00000 -0.00000" xyz="0.00000 -0.00000 0.00000"/>
       <geometry>
-        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/fork.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/fork_link.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -81,15 +81,18 @@
     </hardware>
     <joint name="fork0_link_joint">
       <command_interface name="position">
-        <param name="min">-1</param>
-        <param name="max">1</param>
+        <!-- <param name="min">-1</param> -->
+        <!-- <param name="max">1</param> -->
       </command_interface>
       <command_interface name="velocity">
-        <param name="min">-1</param>
-        <param name="max">1</param>
+        <!-- <param name="min">-1</param> -->
+        <!-- <param name="max">1</param> -->
       </command_interface>
-      <param name="p">500</param>
-      <param name="d">0.5</param>
+      <!-- WARN When this active a robot falls down -->
+      <!-- <command_interface name="effort"/> -->
+      <!-- <param name="p">${p}</param> -->
+      <!-- <param name="d">${d}</param> -->
+      <!-- <command_interface name="effort"/> -->
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -146,15 +149,18 @@
     </hardware>
     <joint name="main0_link_joint">
       <command_interface name="position">
-        <param name="min">-1</param>
-        <param name="max">1</param>
+        <!-- <param name="min">-1</param> -->
+        <!-- <param name="max">1</param> -->
       </command_interface>
       <command_interface name="velocity">
-        <param name="min">-1</param>
-        <param name="max">1</param>
+        <!-- <param name="min">-1</param> -->
+        <!-- <param name="max">1</param> -->
       </command_interface>
-      <param name="p">100</param>
-      <param name="d">0.5</param>
+      <!-- WARN When this active a robot falls down -->
+      <!-- <command_interface name="effort"/> -->
+      <!-- <param name="p">${p}</param> -->
+      <!-- <param name="d">${d}</param> -->
+      <!-- <command_interface name="effort"/> -->
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -180,7 +186,7 @@
     </visual>
   </gazebo>
   <joint name="fork1_link_joint" type="revolute">
-    <limit effort="78" lower="-3.14159" upper="3.14159" velocity="0.52"/>
+    <limit effort="78" lower="-6.14159" upper="6.14159" velocity="0.52"/>
     <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.13300"/>
     <parent link="main0_link"/>
     <child link="fork1_link"/>
@@ -190,7 +196,7 @@
     <collision name="fork1_link_collision">
       <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000"/>
       <geometry>
-        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/fork.stl" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/fork_link.stl" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </collision>
     <inertial>
@@ -201,7 +207,7 @@
     <visual name="fork1_link_visual">
       <origin rpy="0.00000 -0.00000 -0.00000" xyz="0.00000 -0.00000 0.00000"/>
       <geometry>
-        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/fork.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/fork_link.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -211,15 +217,18 @@
     </hardware>
     <joint name="fork1_link_joint">
       <command_interface name="position">
-        <param name="min">-1</param>
-        <param name="max">1</param>
+        <!-- <param name="min">-1</param> -->
+        <!-- <param name="max">1</param> -->
       </command_interface>
       <command_interface name="velocity">
-        <param name="min">-1</param>
-        <param name="max">1</param>
+        <!-- <param name="min">-1</param> -->
+        <!-- <param name="max">1</param> -->
       </command_interface>
-      <param name="p">500</param>
-      <param name="d">0.5</param>
+      <!-- WARN When this active a robot falls down -->
+      <!-- <command_interface name="effort"/> -->
+      <!-- <param name="p">${p}</param> -->
+      <!-- <param name="d">${d}</param> -->
+      <!-- <command_interface name="effort"/> -->
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -276,15 +285,18 @@
     </hardware>
     <joint name="main1_link_joint">
       <command_interface name="position">
-        <param name="min">-1</param>
-        <param name="max">1</param>
+        <!-- <param name="min">-1</param> -->
+        <!-- <param name="max">1</param> -->
       </command_interface>
       <command_interface name="velocity">
-        <param name="min">-1</param>
-        <param name="max">1</param>
+        <!-- <param name="min">-1</param> -->
+        <!-- <param name="max">1</param> -->
       </command_interface>
-      <param name="p">100</param>
-      <param name="d">0.5</param>
+      <!-- WARN When this active a robot falls down -->
+      <!-- <command_interface name="effort"/> -->
+      <!-- <param name="p">${p}</param> -->
+      <!-- <param name="d">${d}</param> -->
+      <!-- <command_interface name="effort"/> -->
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -310,7 +322,7 @@
     </visual>
   </gazebo>
   <joint name="fork2_link_joint" type="revolute">
-    <limit effort="78" lower="-3.14159" upper="3.14159" velocity="0.52"/>
+    <limit effort="78" lower="-6.14159" upper="6.14159" velocity="0.52"/>
     <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.13300"/>
     <parent link="main1_link"/>
     <child link="fork2_link"/>
@@ -320,7 +332,7 @@
     <collision name="fork2_link_collision">
       <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000"/>
       <geometry>
-        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/fork.stl" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/fork_link.stl" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </collision>
     <inertial>
@@ -331,7 +343,7 @@
     <visual name="fork2_link_visual">
       <origin rpy="0.00000 -0.00000 -0.00000" xyz="0.00000 -0.00000 0.00000"/>
       <geometry>
-        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/fork.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/fork_link.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -341,15 +353,18 @@
     </hardware>
     <joint name="fork2_link_joint">
       <command_interface name="position">
-        <param name="min">-1</param>
-        <param name="max">1</param>
+        <!-- <param name="min">-1</param> -->
+        <!-- <param name="max">1</param> -->
       </command_interface>
       <command_interface name="velocity">
-        <param name="min">-1</param>
-        <param name="max">1</param>
+        <!-- <param name="min">-1</param> -->
+        <!-- <param name="max">1</param> -->
       </command_interface>
-      <param name="p">500</param>
-      <param name="d">0.5</param>
+      <!-- WARN When this active a robot falls down -->
+      <!-- <command_interface name="effort"/> -->
+      <!-- <param name="p">${p}</param> -->
+      <!-- <param name="d">${d}</param> -->
+      <!-- <command_interface name="effort"/> -->
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -391,7 +406,7 @@
     <collision name="ee_link_collision">
       <origin rpy="-0.00000 0.00000 -0.00000" xyz="0.00000 -0.00000 0.00000"/>
       <geometry>
-        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/tail_link.stl" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/collision/ee_link.stl" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </collision>
     <inertial>
@@ -402,7 +417,7 @@
     <visual name="ee_link_visual">
       <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000"/>
       <geometry>
-        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/tail_link.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/meshes/visual/ee_link.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -412,15 +427,18 @@
     </hardware>
     <joint name="ee_link_joint">
       <command_interface name="position">
-        <param name="min">-1</param>
-        <param name="max">1</param>
+        <!-- <param name="min">-1</param> -->
+        <!-- <param name="max">1</param> -->
       </command_interface>
       <command_interface name="velocity">
-        <param name="min">-1</param>
-        <param name="max">1</param>
+        <!-- <param name="min">-1</param> -->
+        <!-- <param name="max">1</param> -->
       </command_interface>
-      <param name="p">10</param>
-      <param name="d">0.5</param>
+      <!-- WARN When this active a robot falls down -->
+      <!-- <command_interface name="effort"/> -->
+      <!-- <param name="p">${p}</param> -->
+      <!-- <param name="d">${d}</param> -->
+      <!-- <command_interface name="effort"/> -->
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -445,10 +463,233 @@
       </material>
     </visual>
   </gazebo>
+  <!-- END robot description -->
+  <ros2_control name="rbs_gripper_gazebo" type="system">
+    <!-- Plugins -->
+    <hardware>
+      <plugin>ign_ros2_control/IgnitionSystem</plugin>
+    </hardware>
+    <!-- Joint interfaces -->
+    <joint name="rbs_gripper_rot_base_joint">
+      <state_interface name="position">
+        <param name="initial_value">0.000</param>
+      </state_interface>
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <!-- <command_interface name="effort"/> -->
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="rbs_gripper_r_finger_joint">
+      <state_interface name="position">
+        <param name="initial_value">0.004</param>
+      </state_interface>
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <!-- <command_interface name="effort"/> -->
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="rbs_gripper_l_finger_joint">
+      <param name="mimic">rbs_gripper_r_finger_joint</param>
+      <param name="multiplier">1</param>
+    </joint>
+  </ros2_control>
+  <transmission name="rbs_gripper_rot_base_joint_transmission">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="rbs_gripper_rot_base_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="rbs_gripper_rot_base_joint_actuator">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <joint name="rbs_gripper_gripper_base_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="tool0"/>
+    <child link="rbs_gripper_gripper_base_link"/>
+  </joint>
+  <link name="rbs_gripper_gripper_base_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.000364704367134063 0.0336387482840125 0.0593891203954369"/>
+      <mass value="1.13983632906086"/>
+      <inertia ixx="0.00107738806534129" ixy="-1.09841172461737E-05" ixz="2.62750043451545E-06" iyy="0.000717388573992299" iyz="-2.95426438182787E-05" izz="0.00115777179755934"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/visual/base.dae"/>
+      </geometry>
+      <material name="rbs_gripper_material">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/collision/base.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="rbs_gripper_rot_base_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="6.79110135283868E-11 -3.80956832067611E-10 0.00775394473595793"/>
+      <mass value="0.161003401535982"/>
+      <inertia ixx="0.00011089089949771" ixy="5.01335040610636E-06" ixz="1.74608448389267E-14" iyy="0.000105515893695012" iyz="-2.03282362854432E-14" izz="0.000206912001661452"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/visual/rotor.dae"/>
+      </geometry>
+      <material name="rbs_gripper_material">
+        <color rgba="0.250980392156863 0.250980392156863 0.250980392156863 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/collision/rotor.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="rbs_gripper_rot_base_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0.10861"/>
+    <parent link="rbs_gripper_gripper_base_link"/>
+    <child link="rbs_gripper_rot_base_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="78" lower="-3.14159" upper="3.14159" velocity="0.52"/>
+  </joint>
+  <link name="rbs_gripper_l_finger_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.00399878118534129 0.0187296413885176 -0.0777776233934166"/>
+      <mass value="0.0601996441483964"/>
+      <inertia ixx="4.18533281165612E-05" ixy="-7.11657995951147E-06" ixz="1.81029223490065E-05" iyy="7.89886367868258E-05" iyz="1.20542845942065E-05" izz="5.16740841307935E-05"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/visual/finger.dae"/>
+      </geometry>
+      <material name="rbs_gripper_material">
+        <color rgba="0.752941176470588 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/collision/finger.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="rbs_gripper_l_finger_joint" type="prismatic">
+    <origin rpy="0 0 1.5708" xyz="0 0 0.1071"/>
+    <parent link="rbs_gripper_rot_base_link"/>
+    <child link="rbs_gripper_l_finger_link"/>
+    <axis xyz="-1 0 0"/>
+    <limit effort="10" lower="0" upper="0.064" velocity="0.53"/>
+    <mimic joint="rbs_gripper_r_finger_joint" multiplier="1"/>
+  </joint>
+  <link name="rbs_gripper_r_finger_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0039988 -0.077778 -0.01873"/>
+      <mass value="0.0602"/>
+      <inertia ixx="4.1853E-05" ixy="1.8103E-05" ixz="7.1166E-06" iyy="5.1674E-05" iyz="-1.2054E-05" izz="7.8989E-05"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/visual/finger.dae"/>
+      </geometry>
+      <material name="rbs_gripper_material">
+        <color rgba="0.75294 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/bill-finger/rbs_ws/install/rbs_gripper/share/rbs_gripper/meshes/collision/finger.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="rbs_gripper_r_finger_joint" type="prismatic">
+    <origin rpy="0 0 -1.5708" xyz="0 0 0.1071"/>
+    <parent link="rbs_gripper_rot_base_link"/>
+    <child link="rbs_gripper_r_finger_link"/>
+    <axis xyz="-1 0 0"/>
+    <limit effort="10" lower="0" upper="0.064" velocity="0.53"/>
+  </joint>
+  <link name="gripper_grasp_point"/>
+  <joint name="rbs_gripper_gripper_tool0_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0.09139"/>
+    <parent link="rbs_gripper_rot_base_link"/>
+    <child link="gripper_grasp_point"/>
+  </joint>
+  <gazebo reference="rbs_gripper_rot_base_link">
+    <self_collide>1</self_collide>
+    <!-- <soft_contact> -->
+    <!--   <dart> -->
+    <!--     <bone_attachment>100</bone_attachment> -->
+    <!--     <stiffness>100</stiffness> -->
+    <!--     <damping>10</damping> -->
+    <!--     <flesh_mass_fraction>0.050000000000000003</flesh_mass_fraction> -->
+    <!--   </dart> -->
+    <!-- </soft_contact> -->
+  </gazebo>
+  <gazebo reference="rbs_gripper_l_finger_link">
+    <self_collide>1</self_collide>
+    <!-- <soft_contact> -->
+    <!--   <dart> -->
+    <!--     <bone_attachment>100</bone_attachment> -->
+    <!--     <stiffness>100</stiffness> -->
+    <!--     <damping>10</damping> -->
+    <!--     <flesh_mass_fraction>0.050000000000000003</flesh_mass_fraction> -->
+    <!--   </dart> -->
+    <!-- </soft_contact> -->
+  </gazebo>
+  <gazebo reference="rbs_gripper_r_finger_link">
+    <self_collide>1</self_collide>
+    <!-- <soft_contact> -->
+    <!--   <dart> -->
+    <!--     <bone_attachment>100</bone_attachment> -->
+    <!--     <stiffness>100</stiffness> -->
+    <!--     <damping>10</damping> -->
+    <!--     <flesh_mass_fraction>0.050000000000000003</flesh_mass_fraction> -->
+    <!--   </dart> -->
+    <!-- </soft_contact> -->
+  </gazebo>
+  <ros2_control name="fts_sensor" type="sensor">
+    <hardware>
+      <plugin>ign_ros2_control/IgnitionFts</plugin>
+    </hardware>
+    <sensor name="fts_sensor">
+      <state_interface name="force.x"/>
+      <state_interface name="force.y"/>
+      <state_interface name="force.z"/>
+      <state_interface name="torque.x"/>
+      <state_interface name="torque.y"/>
+      <state_interface name="torque.z"/>
+    </sensor>
+  </ros2_control>
+  <gazebo reference="tool0_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+    <sensor name="fts_sensor" type="force_torque">
+      <always_on>true</always_on>
+      <update_rate>50</update_rate>
+      <visualize>true</visualize>
+      <topic>ft_data</topic>
+      <force_torque>
+        <frame>sensor</frame>
+        <measure_direction>child_to_parent</measure_direction>
+      </force_torque>
+    </sensor>
+  </gazebo>
   <gazebo>
     <plugin filename="libign_ros2_control-system.so" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-      <parameters>/home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/config/rbs_arm_controllers_gazebosim.yaml</parameters>
-      <controller_manager_node_name>/controller_manager</controller_manager_node_name>
+      <parameters>/home/bill-finger/rbs_ws/install/rbs_arm/share/rbs_arm/config/rbs_arm0_controllers.yaml</parameters>
+      <ros>
+        <namespace>/arm0</namespace>
+      </ros>
     </plugin>
   </gazebo>
 </robot>
