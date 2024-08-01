@@ -40,7 +40,7 @@ if __name__ == "__main__":
     parser.add_argument('--gripper-name', type=str, default="rbs_gripper", help="Gripper name to find the gripper ROS2 package")
     parser.add_argument('--parent', type=str, default='world', help='Parent link of robot')
     parser.add_argument('--ndof', type=int, default=6, help='Number Degree of Freedom of robot arm')
-    parser.add_argument('--save-path', type=str, default="/home/bill-finger/assembly/12", help='Absolute path to store robot data')
+    parser.add_argument('--save-path', type=str, default="", help='Absolute path to store robot data')
     parser.add_argument('--pose', type=list, default=[0,0,0,0,0,0], help="List of [x, y, z, th, fi, psi]")
 
     args, _ = parser.parse_known_args()
