@@ -76,6 +76,7 @@ joint_effort_controller:
       - main1_link_joint
       - fork2_link_joint
       - ee_link_joint
+      - rbs_gripper_rot_base_joint
   
 gripper_controller:
   ros__parameters:
@@ -104,8 +105,8 @@ cartesian_force_controller:
 
     # Choose: position or velocity.
     command_interfaces:
-      - position
-        #- velocity
+      # - position
+      - velocity
 
     solver:
         error_scale: 0.5
