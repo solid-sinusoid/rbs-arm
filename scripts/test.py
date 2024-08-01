@@ -1,7 +1,7 @@
 from rbs_arm import RbsBuilder
 
 ndofs = [2, 4, 6]
-gripper_names = ["rbs_gripper", None]  # Сначала с гриппером, затем без
+gripper_names = ["rbs_gripper", None]
 
 for gripper_name in gripper_names:
     for ndof in ndofs:
