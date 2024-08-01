@@ -39,7 +39,7 @@
 
     <!-- If hardware == gazebo so insert additional parameters for it -->
     <xacro:if value="${hardware=='gazebo'}">
-      <xacro:rbs_fts name="fts_sensor" tf_prefix="${tf_prefix}" link="${tf_prefix}tool0"/>
+      <xacro:fts name="fts_sensor" tf_prefix="${tf_prefix}" link="${tf_prefix}tool0"/>
       <gazebo>
         <plugin filename="libign_ros2_control-system.so"
           name="ign_ros2_control::IgnitionROS2ControlPlugin">

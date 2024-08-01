@@ -53,7 +53,7 @@
         </joint>
     </xacro:macro>
 
-    <xacro:macro name="rbs_fts" params="name tf_prefix link">
+    <xacro:macro name="fts" params="name tf_prefix link">
 
     <ros2_control name="${tf_prefix}${name}" type="sensor">
       <hardware>
