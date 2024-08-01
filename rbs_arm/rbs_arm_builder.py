@@ -6,22 +6,35 @@ from robot_builder.components import JointNode, LinkNode
 import importlib
 
 class RbsBuilder(RobotBuilderABC):
+    """
+    Attributes: 
 
+        ndof: 
+        robot_name: 
+        parent:
+        gripper_package:
+        absolute_path:
+    """
     def __init__(self, ndof: int, 
                  robot_name: str, 
                  parent: str,
-                 pose: list[float],
-                 gripper_package: Optional[str] = None) -> None:
+                 pose: dict[str, float],
+                 save_path: str | None = None) -> None:
         self.ndof = ndof
         self.robot_name = robot_name
-        self.robot_type = "rbs_arm"
-        self.gripper_package = gripper_package
+        robot_type = "rbs_arm"
         self.pose = pose
         self.hardware = ""
-        self.reset(robot_name, parent)
+        self.save_path = save_path
+        self.reset(robot_name, robot_type, parent)
 
-    def reset(self, robot_prefix: str, parent: str) -> None:
-        self._rc = RobotConfig(robot_name=robot_prefix, robot_type=self.robot_type, parent=parent)
+
+    def reset(self, robot_prefix: str, robot_type: str, parent: str) -> None:
+        self._rc = RobotConfig(robot_name=robot_prefix,
+                               robot_type=robot_type,
+                               parent=parent)
+
+        self.package_path = self._rc.robot_package_abs_path
 
     @property
     def robot(self) -> RobotConfig:
@@ -34,10 +47,13 @@ class RbsBuilder(RobotBuilderABC):
         if self._rc.parent == "world":
             link00 = LinkNode(N=None, robot_name=self.robot_name,
                               link_config={}, link_name="world",
-                              package_path=self._rc.robot_package_abs_path)
+                              package_path=self.package_path, save_geometry_path=self.save_path)
             self._rc.add(link00)
         link0 = LinkNode(0, self.robot_name, 
-                         self._rc.robot_config["start_link"], "start_link", self._rc.robot_package_abs_path)
+                         self._rc.robot_config["start_link"],
+                         "start_link",
+                         self.package_path,
+                         save_geometry_path=self.save_path)
         joint0 = JointNode(0, self._rc.parent, link0.name, joint_config={"type": "fixed", "origin": self.pose})
         self._rc.add(joint0)
         self._rc.add(link0)
@@ -48,7 +64,7 @@ class RbsBuilder(RobotBuilderABC):
             link_name = "fork_link"
             linkr = LinkNode(self.ndof - 1, self.robot_name, 
                              self._rc.robot_config[link_name]["link"], 
-                             link_name, self._rc.robot_package_abs_path)
+                             link_name, self.package_path, self.save_path)
 
             jointr = JointNode(self.ndof - 1, self._rc.links[-1].name, 
                                linkr.name, joint_config=self._rc.robot_config[link_name]["joint_base"])
@@ -59,7 +75,7 @@ class RbsBuilder(RobotBuilderABC):
                 joint = "joint_base" if i == 1 else "joint"
                 link_name = "fork_link" if i % 2 != 0 else "main_link"
                 linkr = LinkNode(i, self.robot_name, self._rc.robot_config[link_name]["link"], 
-                                 link_name, self._rc.robot_package_abs_path)
+                                 link_name, self.package_path, self.save_path)
                 jointr = JointNode(i, self._rc.links[-1].name, 
                                    linkr.name, joint_config=self._rc.robot_config[link_name][joint])
                 self._rc.add(jointr)
@@ -67,7 +83,7 @@ class RbsBuilder(RobotBuilderABC):
 
         linkr = LinkNode(self.ndof, self.robot_name,
                          self._rc.robot_config["ee_link"]["link"], "ee_link",
-                         self._rc.robot_package_abs_path)
+                         self.package_path, self.save_path)
         jointr = JointNode(self.ndof, self._rc.links[-1].name,
                            linkr.name, joint_config=self._rc.robot_config["ee_link"]["joint"])
 
@@ -78,7 +94,7 @@ class RbsBuilder(RobotBuilderABC):
                          robot_name=self.robot_name, 
                          link_config={}, 
                          link_name="tool0", 
-                         package_path=self._rc.robot_package_abs_path)
+                         package_path=self.package_path, save_geometry_path=self.save_path)
         tool0_joint = JointNode(N=None, parent=linkr.name,
                                 child=tool0.name,
                                 joint_config={
@@ -89,11 +105,11 @@ class RbsBuilder(RobotBuilderABC):
         self.tool0 = tool0.name
         self._rc.add_part("RobotBase")
 
-    def gripper(self) -> None:
-        if self.gripper_package is not None:
+    def gripper(self, gripper_package: str | None, save_geometry_path: str | None = None) -> None:
+        if gripper_package is not None:
             try:
-                module = importlib.import_module(self.gripper_package)
-                gripper = module.RbsGrippperBuilder(self.robot_name, self.tool0)
+                module = importlib.import_module(gripper_package)
+                gripper = module.RbsGrippperBuilder(self.robot_name, self.tool0, save_geometry_path)
                 gripper.base()
                 self._rc.add(gripper.robot)
                 self._rc.merge_children()
@@ -121,7 +137,7 @@ class RbsBuilder(RobotBuilderABC):
         self._rc.generate_moveit_config(update=True)
         self._rc.add_part("MoveIt2")
 
-    def simulation(self, simulator: Optional[str] = None) -> None:
+    def simulation(self, simulator: str | None = None) -> None:
         if simulator is None:
             if "ros2_control" in self._rc.parts:
                 simulator = self.hardware
