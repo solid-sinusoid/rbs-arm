@@ -1,0 +1,152 @@
+[links.base_link.geometry]
+collision.mesh.filename = "base_link.stl"
+collision.mesh.scale.value = 1.0
+visual.mesh.filename = "base_link.dae"
+visual.mesh.scale.value = 1.0
+
+[links.base_link.inertial]
+mass.value = 1.88031044620482
+inertia.ixx = 0.00503302470272442
+inertia.ixy = 0.000343817346410954
+inertia.ixz = -4.74990755448368E-06
+inertia.iyy = 0.00337962410057753
+inertia.iyz = -2.3099255620051E-05
+inertia.izz = 0.00405858207282473
+
+[links.base_link.inertial.origin]
+position = { x = -0.000297002857922682, y = 0.0964721185617698, z = -0.000361033370053684 }
+orientation = { r = 0.0, p = 0.0, y = 0.0 }
+
+[links.fork_link.geometry]
+collision = { mesh = { filename = "fork_link.stl", scale = { value = 1.0 } } }
+visual = { mesh = { filename = "fork_link.dae", scale = { value = 1.0 } } }
+
+[links.fork_link.inertial]
+mass.value = 1.12472202892859
+inertia = { ixx = 0.00147695259043549, ixy = -2.66894744420299E-05, ixz = -4.40871314563273E-05, iyy = 0.00135500487881796, iyz = -3.19001462979333E-05, izz = 0.00087582892706912 }
+
+[links.fork_link.inertial.origin]
+position = { x = -9.7531539777207E-06, y = -0.000888494418875867, z = 0.0342332199538358 }
+orientation = { r = 0.0, p = 0.0, y = 0.0 }
+
+[links.main_link.geometry]
+collision = { mesh = { filename = "main_link.stl", scale = { value = 1.0 } } }
+visual = { mesh = { filename = "main_link.dae", scale = { value = 1.0 } } }
+
+[links.main_link.inertial]
+mass.value = 1.58688811563124
+inertia = { ixx = 0.00147695259043549, ixy = -2.66894744420299E-05, ixz = -4.40871314563273E-05, iyy = 0.00135500487881796, iyz = -3.19001462979333E-05, izz = 0.00087582892706912 }
+
+[links.main_link.inertial.origin]
+position = { x = -9.7531539777207E-06, y = -0.000888494418875867, z = 0.0342332199538358 }
+orientation = { r = 0.0, p = 0.0, y = 0.0 }
+
+[links.ee_link.geometry]
+collision = { mesh = { filename = "ee_link.stl", scale = { value = 1.0 } } }
+visual = { mesh = { filename = "ee_link.dae", scale = { value = 1.0 } } }
+
+[links.ee_link.inertial]
+mass.value = 1.88031044620482
+inertia = { ixx = 0.00147695259043549, ixy = -2.66894744420299E-05, ixz = -4.40871314563273E-05, iyy = 0.00135500487881796, iyz = -3.19001462979333E-05, izz = 0.00087582892706912 }
+
+[links.ee_link.inertial.origin]
+position = { x = -9.7531539777207E-06, y = -0.000888494418875867, z = 0.0342332199538358 }
+orientation = { r = 0.0, p = 0.0, y = 0.0 }
+
+
+[links.fork_link.joint]
+limit.lower = -3.14159
+limit.upper = 3.14159
+limit.max_effort = 78
+limit.max_velocity = 0.52
+type = "revolute"
+axis.xyz = [0, 0, 1]
+
+[links.fork_link.joint.origin]
+positon = { x = 0.00000, y = 0.00000, z = 0.13300 }
+orientation = { r = 0.0, p = 0.0, y = 0.0 }
+
+[links.fork_link.joint_base]
+limit.lower = -3.14159
+limit.upper = 3.14159
+limit.max_effort = 78
+limit.max_velocity = 0.52
+type = "revolute"
+axis.xyz = [0, 0, 1]
+
+[links.fork_link.joint_base.origin]
+position = { x = 0.00000, y = 0.00000, z = 0.17833 }
+orientation = { r = 0.0, p = 0.0, y = 0.0 }
+
+[links.main_link.joint]
+limit.lower = -1.5708
+limit.upper = 3.14159
+limit.max_effort = 78
+limit.max_velocity = 0.52
+type = "revolute"
+axis.xyz = [0, 1, 0]
+
+[links.main_link.joint.origin]
+position = { x = 0.10000, y = 0.00000, z = 0.09400 }
+orientation = { r = 0.0, p = 0.0, y = 0.0 }
+
+[links.ee_link.joint]
+limit.lower = -1.5708
+limit.upper = 3.14159
+limit.max_effort = 78
+limit.max_velocity = 0.52
+type = "revolute"
+axis.xyz = [0, 1, 0]
+
+[links.ee_link.joint.origin]
+position = { x = 0.10000, y = 0.00000, z = 0.09400 }
+orientation = { r = 0.0, p = 0.0, y = 0.0 }
+
+[anchor.world]
+positon = { x = 0.0, y = 0.0, z = 0.0 }
+orientation = { r = 0.0, p = 0.0, y = 0.0 }
+
+[anchor.tool0]
+position = { x = 0.0, y = 0.0, z = 0.11 }
+orientation = { r = 0.0, p = 0.0, y = 0.0 }
+
+[robots.arm1]
+links = [
+  "base_link",
+  "fork_link",
+  "main_link",
+  "fork_link",
+  "main_link",
+  "ee_link",
+  "tool0",
+]
+# ndof = { value = 6 } #INFO: Optional if links defined
+parent = "world"
+gripper.name = "rbs_gripper"
+# The Robot position
+origin.position = { x = 0.00000, y = 0.00000, z = 0.00000 }
+origin.orientation = { r = 0.0, p = 0.0, y = 0.0 }
+
+[robots.arm2]
+links = [
+  "base_link",
+  "fork_link",
+  "main_link",
+  "fork_link",
+  "main_link",
+  "ee_link",
+  "tool0",
+]
+
+parent = "world"
+gripper.name = "rbs_gripper"
+# The Robot position
+origin.position = { x = 0.50000, y = 0.00000, z = 0.00000 }
+origin.orientation = { r = 0.0, p = 0.0, y = 0.0 }
+
+[robots.arm1.ros2_control]
+allowed_controllers = [
+  "joint_trajectory_controller",
+  "cartesian_motion_controller",
+]
+allowed_controller_types = []
