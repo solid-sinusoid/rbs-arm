@@ -1,0 +1,218 @@
+zero_orientation: &zero_orientation
+  r: 0
+  p: 0
+  y: 0
+#
+axis_y: &axis_y [0, 1, 0]
+axis_z: &axis_z [0, 0, 1]
+#
+limit_z: &limit_z
+  lower: -3.14159
+  upper: 3.14159
+  max_effort: 78.0
+  max_velocity: 0.52
+#
+limit_y: &limit_y
+  lower: -1.5708
+  upper: 3.14159
+  max_effort: 78.0
+  max_velocity: 0.52
+#
+links:
+  base_link:
+    geometry:
+      collision:
+        mesh:
+          filename: base_link.stl
+      visual:
+        mesh:
+          filename: base_link.dae
+    inertial:
+      mass: 1.88031044620482
+      inertia:
+        ixx: 0.00503302470272442
+        ixy: 0.000343817346410954
+        ixz: -0.00000474990755448368
+        iyy: 0.00337962410057753
+        iyz: -0.000023099255620051
+        izz: 0.00405858207282473
+      origin:
+        position:
+          x: -0.000297002857922682
+          y: 0.0964721185617698
+          z: -0.000361033370053684
+        orientation: *zero_orientation
+  fork_link:
+    geometry:
+      collision:
+        mesh:
+          filename: fork_link.stl
+      visual:
+        mesh:
+          filename: fork_link.dae
+    inertial:
+      mass: 1.12472202892859
+      inertia:
+        ixx: 0.00147695259043549
+        ixy: -0.0000266894744420299
+        ixz: -0.0000440871314563273
+        iyy: 0.00135500487881796
+        iyz: -0.0000319001462979333
+        izz: 0.00087582892706912
+      position:
+        x: -0.0000097531539777207
+        y: -0.000888494418875867
+        z: 0.0342332199538358
+      orientation: *zero_orientation
+  main_link:
+    geometry:
+      collision:
+        mesh:
+          filename: main_link.stl
+      visual:
+        mesh:
+          filename: main_link.dae
+    inertial:
+      mass: 1.58688811563124
+      inertia:
+        ixx: 0.00147695259043549
+        ixy: -0.0000266894744420299
+        ixz: -0.0000440871314563273
+        iyy: 0.00135500487881796
+        iyz: -0.0000319001462979333
+        izz: 0.00087582892706912
+      origin:
+        position:
+          x: -0.0000097531539777207
+          y: -0.000888494418875867
+          z: 0.0342332199538358
+        orientation: *zero_orientation
+  ee_link:
+    geometry:
+      collision:
+        mesh: 
+          filename: ee_link.stl
+      visual:
+        mesh: 
+          filename: ee_link.dae
+    inertial:
+      mass: 1.88031044620482
+      inertia:
+        ixx: 0.00147695259043549
+        ixy: -0.0000266894744420299
+        ixz: -0.0000440871314563273
+        iyy: 0.00135500487881796
+        iyz: -0.0000319001462979333
+        izz: 0.00087582892706912
+      origin:
+        position:
+          x: -0.0000097531539777207
+          y: -0.000888494418875867
+          z: 0.0342332199538358
+        orientation: *zero_orientation
+  camera_link:
+    geometry:
+      collision:
+        box: [1, 1, 1]
+        cylinder:
+          length:
+          radius:
+      visual:
+        box: [1, 1, 1]
+    inertial:
+      mass: 1.0
+joints:
+  - parent: main_link
+    child: fork_link
+    limit: *limit_z
+    type: revolute
+    axis: *axis_z
+    positon:
+      x: 0.0
+      y: 0.0
+      z: 0.133
+    orientation: *zero_orientation
+  - name:
+    parent: base_link
+    child: fork_link
+    limit: *limit_z
+    type: revolute
+    axis: *axis_z
+    origin:
+      position: {x: 0, y: 0, z: 0.17833}
+      orientation: *zero_orientation
+  - parent: fork_link
+    child: main_link
+    limit: *limit_y
+    type: revolute
+    axis: *axis_y
+    origin:
+      position: {x: 0.1, y: 0, z: 0.094}
+      orientation: *zero_orientation
+  - parent: fork_link
+    child: ee_link
+    limit: *limit_y
+    type: revolute
+    axis: *axis_y
+    origin:
+      position: {x: 0.1, y: 0, z: 0.094}
+      orientation: *zero_orientation
+  - parent: tool0
+    child: camera_link
+    type: fixed
+    origin:
+      position: { x: 1.0, y: 1.0, z: 1.0}
+      orientation: *zero_orientation
+frames:
+  tool0:
+    position:
+      x: 0
+      y: 0
+      z: 0
+    orientation: *zero_orientation
+cameras:
+  - name: front_camera
+    link: camera_link
+    fov: 1.00412
+    image_size: [320, 240]
+    clip: [1, 100]
+robots:
+  arm1:
+    structure:
+      - base_link
+      - fork_link
+      - main_link
+      - fork_link
+      - main_link
+      - fork_link
+      - ee_link
+      - tool0
+      # - parent: base_link
+      #   child: fork_link
+      # - parent: fork_link
+      #   child: main_link
+      # - parent: main_link
+      #   child: ee_link
+    tool: rbs_gripper
+    parent: world
+    joint_type: fixed # default value is fixed
+    origin:
+      position:
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      orientation: *zero_orientation
+    robot_interface:
+      type: actuator
+      command_interface:
+        - position
+      state_interface:
+        - position
+        - velocity
+      hardware: gazebo
+      force_torque_sensor: link_name
+    camera:
+      link: link_name
+      fov: 1.00412
+      image_size: [320, 240]
+      clip: [1, 100]
