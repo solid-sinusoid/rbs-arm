@@ -1,7 +1,7 @@
 from launch_ros.actions import Node
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
-from launch.conditions import IfCondition, UnlessCondition
+# from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration
 
 def create_spawner(controller_name, namespace, condition=None, inactive=False):
@@ -20,11 +20,11 @@ def launch_setup(context, *args, **kwargs):
     namespace = LaunchConfiguration("namespace").perform(context)
     control_strategy = LaunchConfiguration("control_strategy").perform(context)
     control_space = LaunchConfiguration("control_space").perform(context)
-    is_gripper = LaunchConfiguration("is_gripper").perform(context)
+    has_gripper = LaunchConfiguration("has_gripper").perform(context)
 
     controllers_config = {
         "joint_state_broadcaster": True,
-        "gripper_controller": is_gripper == "true",
+        "gripper_controller": has_gripper == "true",
         "joint_trajectory_controller": control_strategy == "position" and control_space == "joint",
         "cartesian_motion_controller": control_strategy == "position" and control_space == "task",
         "cartesian_force_controller": control_strategy == "effort" and control_space == "task",
@@ -59,7 +59,7 @@ def generate_launch_description():
             description="Control strategy: 'position', 'velocity', or 'effort'."
         ),
         DeclareLaunchArgument(
-            "is_gripper",
+            "has_gripper",
             default_value="true",
             description="Whether to activate the gripper_controller."
         ),
