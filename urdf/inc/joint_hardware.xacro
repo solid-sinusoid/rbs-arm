@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <xacro:include filename="$(find rbs_arm)/urdf/inc/joint_interface.xacro" />
-    <xacro:macro name="joint_hardware" params="joint_name hardware p d">
+    <xacro:macro name="joint_hardware" params="joint_name hardware p:=^ d:=^">
         <ros2_control name="${joint_name}_hardware_interface" type="actuator">
             <hardware>
                 <xacro:if value="${hardware=='gazebo'}">

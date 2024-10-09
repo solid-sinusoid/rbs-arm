@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="rbs_arm" params="namespace parent *origin tf_prefix hardware gripper_name controllers">
+  <xacro:macro name="rbs_arm"
+    params="namespace parent *origin tf_prefix hardware gripper_name controllers">
 
     <xacro:include filename="$(find rbs_arm)/urdf/inc/rbs_base_link.xacro" />
     <xacro:include filename="$(find rbs_arm)/urdf/inc/rbs_ee_link.xacro" />
     <xacro:include filename="$(find rbs_arm)/urdf/inc/rbs_fork_link.xacro" />
     <xacro:include filename="$(find rbs_arm)/urdf/inc/rbs_main_link.xacro" />
-    <xacro:include filename="$(find rbs_arm)/urdf/sensors.xacro"/>
+    <xacro:include filename="$(find rbs_arm)/urdf/sensors.xacro" />
 
     <!-- BEGIN robot description  -->
     <xacro:base_link parent="${parent}" tf_prefix="${tf_prefix}" hardware="${hardware}">
       <xacro:insert_block name="origin" />
     </xacro:base_link>
-    <xacro:fork_link parent="base_link"  name="fork0_link" tf_prefix="${tf_prefix}" hardware="${hardware}" 
-      p="10000" d="0.2"  />
-    <xacro:main_link parent="fork0_link" name="main0_link" tf_prefix="${tf_prefix}" hardware="${hardware}" 
-      p="10000" d="0.2"/>
-    <xacro:fork_link parent="main0_link" name="fork1_link" tf_prefix="${tf_prefix}" hardware="${hardware}" 
-      p="10000" d="0.2"/>
-    <xacro:main_link parent="fork1_link" name="main1_link" tf_prefix="${tf_prefix}" hardware="${hardware}" 
-      p="1000" d="0.2"/>
-    <xacro:fork_link parent="main1_link" name="fork2_link" tf_prefix="${tf_prefix}" hardware="${hardware}" 
-      p="100" d="0.2"/>
+    <xacro:fork_link parent="base_link" name="fork0_link" tf_prefix="${tf_prefix}"
+      hardware="${hardware}" p="10000" d="0.2" />
+    <xacro:main_link parent="fork0_link" name="main0_link" tf_prefix="${tf_prefix}"
+      hardware="${hardware}"
+      p="10000" d="0.2" />
+    <xacro:fork_link parent="main0_link" name="fork1_link" tf_prefix="${tf_prefix}"
+      hardware="${hardware}" p="10000" d="0.2" />
+    <xacro:main_link parent="fork1_link" name="main1_link" tf_prefix="${tf_prefix}"
+      hardware="${hardware}" p="1000" d="0.2" />
+    <xacro:fork_link parent="main1_link" name="fork2_link" tf_prefix="${tf_prefix}"
+      hardware="${hardware}" p="100" d="0.2" />
     <!-- ee link also contain tool0-->
-    <xacro:ee_link parent="fork2_link" tf_prefix="${tf_prefix}" hardware="${hardware}" 
-      p="20" d="0.2"/>
+    <xacro:ee_link parent="fork2_link" tf_prefix="${tf_prefix}" hardware="${hardware}"
+      p="20" d="0.2" />
     <!-- END robot description -->
 
     <!-- Insert gripper in robot description if exist -->
     <xacro:if value="${gripper_name=='rbs_gripper'}">
       <xacro:include filename="$(find rbs_gripper)/urdf/rbs_gripper_macro.xacro" />
-      <xacro:rbs_gripper tf_prefix="${tf_prefix}" gripper_name="rbs_gripper" parent="${tf_prefix}tool0"
+      <xacro:rbs_gripper tf_prefix="${tf_prefix}" gripper_name="rbs_gripper"
+        parent="${tf_prefix}tool0"
         hardware="${hardware}">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
       </xacro:rbs_gripper>
@@ -39,7 +42,7 @@
 
     <!-- If hardware == gazebo so insert additional parameters for it -->
     <xacro:if value="${hardware=='gazebo'}">
-      <xacro:fts name="fts_sensor" tf_prefix="${tf_prefix}" link="${tf_prefix}tool0"/>
+      <xacro:fts name="fts_sensor" tf_prefix="${tf_prefix}" link="${tf_prefix}tool0" />
       <gazebo>
         <plugin filename="libign_ros2_control-system.so"
           name="ign_ros2_control::IgnitionROS2ControlPlugin">
