@@ -1,0 +1,136 @@
+cartesian_force_controller:
+  ros__parameters:
+    command_interfaces:
+    - velocity
+    end_effector_link: gripper_grasp_point
+    ft_sensor_node_name: force_torque_sensor_broadcaster
+    ft_sensor_ref_link: tool0
+    joints:
+    - fork0_link_joint
+    - main0_link_joint
+    - fork1_link_joint
+    - main1_link_joint
+    - fork2_link_joint
+    - ee_link_joint
+    - rbs_gripper_rot_base_joint
+    pd_gains:
+      rot_x:
+        p: 1.5
+      rot_y:
+        p: 1.5
+      rot_z:
+        p: 1.5
+      trans_x:
+        p: 0.05
+      trans_y:
+        p: 0.05
+      trans_z:
+        p: 0.05
+    robot_base_link: base_link
+    solver:
+      error_scale: 0.5
+      link_mass: 0.5
+      publish_state_feedback: true
+cartesian_motion_controller:
+  ros__parameters:
+    command_interfaces:
+    - position
+    end_effector_link: gripper_grasp_point
+    joints:
+    - fork0_link_joint
+    - main0_link_joint
+    - fork1_link_joint
+    - main1_link_joint
+    - fork2_link_joint
+    - ee_link_joint
+    - rbs_gripper_rot_base_joint
+    pd_gains:
+      rot_x:
+        p: 0.5
+      rot_y:
+        p: 0.5
+      rot_z:
+        p: 0.5
+      trans_x:
+        p: 1.0
+      trans_y:
+        p: 1.0
+      trans_z:
+        p: 1.0
+    robot_base_link: base_link
+    solver:
+      error_scale: 1.0
+      iterations: 10
+      publish_state_feedback: true
+controller_manager:
+  ros__parameters:
+    cartesian_motion_controller:
+      type: cartesian_motion_controller/CartesianMotionController
+    gripper_controller:
+      type: position_controllers/GripperActionController
+    joint_effort_controller:
+      type: effort_controllers/JointGroupEffortController
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    motion_control_handle:
+      type: cartesian_controller_handles/MotionControlHandle
+    update_rate: 1000
+force_torque_sensor_broadcaster:
+  ros__parameters:
+    frame_id: tool0
+    sensor_name: fts_sensor
+gripper_controller:
+  ros__parameters:
+    action_monitor_rate: 200.0
+    allow_stalling: false
+    goal_tolerance: 0.01
+    joint: rbs_gripper_r_finger_joint
+    max_effort: 5.0
+    stall_timeout: 2.0
+    stall_velocity_threshold: 0.001
+joint_effort_controller:
+  ros__parameters:
+    joints:
+    - fork0_link_joint
+    - main0_link_joint
+    - fork1_link_joint
+    - main1_link_joint
+    - fork2_link_joint
+    - ee_link_joint
+    - rbs_gripper_rot_base_joint
+joint_trajectory_controller:
+  ros__parameters:
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    command_interfaces:
+    - position
+    - velocity
+    joints:
+    - fork0_link_joint
+    - main0_link_joint
+    - fork1_link_joint
+    - main1_link_joint
+    - fork2_link_joint
+    - ee_link_joint
+    - rbs_gripper_rot_base_joint
+    state_interfaces:
+    - position
+    - velocity
+    - effort
+    state_publish_rate: 100.0
+motion_control_handle:
+  ros__parameters:
+    controller_name: cartesian_motion_controller
+    end_effector_link: gripper_grasp_point
+    ft_sensor_ref_link: tool0
+    joints:
+    - fork0_link_joint
+    - main0_link_joint
+    - fork1_link_joint
+    - main1_link_joint
+    - fork2_link_joint
+    - ee_link_joint
+    - rbs_gripper_rot_base_joint
+    robot_base_link: base_link

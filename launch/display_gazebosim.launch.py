@@ -65,7 +65,7 @@ def generate_launch_description():
     robot.simulation()
     robot.moveit()
     robot_description_content = robot.robot.urdf().urdf()
-    # urdf = open("/home/bill-finger/rbs_ws/src/rbs_arm/rbs_arm0_6.urdf").read()
+    # urdf = open("/home/bill-finger/rbs_ws/src/rbs_arm/rbs_arm_6.urdf").read()
     # print(urdf)
     robot_description = {"robot_description": robot_description_content}
 

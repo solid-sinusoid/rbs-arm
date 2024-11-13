@@ -1,0 +1,4 @@
+gripper_name: !param gripper_name
+hardware: !param hardware
+simulation_controllers: !variable simulation_controllers
+namespace: ""
