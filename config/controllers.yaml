@@ -118,7 +118,6 @@ joint_trajectory_controller:
     state_interfaces:
     - position
     - velocity
-    - effort
     state_publish_rate: 100.0
 motion_control_handle:
   ros__parameters:
