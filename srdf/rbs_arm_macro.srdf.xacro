@@ -9,6 +9,7 @@
         <chain base_link="${tf_prefix}base_link" tip_link="${tf_prefix}gripper_grasp_point" />
       </xacro:if>
     </group>
+
     <!-- <group_state name="home" group="${name}"> -->
     <!--   <joint name="${tf_prefix}ee_link_joint" value="0" /> -->
     <!--   <joint name="${tf_prefix}fork0_link_joint" value="0" /> -->

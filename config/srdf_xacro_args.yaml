@@ -1,0 +1,4 @@
+name: rbs_arm
+tf_prefix: ""
+with_gripper: "true"
+gripper_name: "rbs_gripper"

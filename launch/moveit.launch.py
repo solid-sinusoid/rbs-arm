@@ -1,10 +1,16 @@
 from launch_ros.actions import Node
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch_ros.substitutions import FindPackage, FindPackageShare
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
-from rbs_launch_utils.launch_common import get_package_share_directory, load_yaml
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+)
+from rbs_launch_utils.launch_common import get_package_share_directory, load_yaml, load_yaml_abs
 import os
+
 
 def generate_launch_description():
     declared_arguments = []
@@ -12,14 +18,21 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "robot_description",
             default_value="''",
-            description="robot description string",
+            description="robot description param",
         )
     )
     declared_arguments.append(
         DeclareLaunchArgument(
             "robot_description_semantic",
             default_value="''",
-            description="robot description semantic string",
+            description="robot description semantic param",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "robot_description_kinematics",
+            default_value="''",
+            description="robot description kinematics param",
         )
     )
     declared_arguments.append(
@@ -58,37 +71,57 @@ def generate_launch_description():
             description="Namespace for move_group_node",
         )
     )
-    
+
+    return LaunchDescription(
+        declared_arguments + [OpaqueFunction(function=launch_setup)]
+    )
+
+
+def launch_setup(context, *args, **kwargs):
     use_sim_time = LaunchConfiguration("use_sim_time")
-    robot_description_content = LaunchConfiguration("robot_description")
-    robot_description_semantic_content = LaunchConfiguration("robot_description_semantic")
-    namespace = LaunchConfiguration("namespace")
+    robot_description_content = LaunchConfiguration("robot_description").perform(context)
+    robot_description_semantic_content = LaunchConfiguration(
+        "robot_description_semantic"
+    ).perform(context)
+    robot_description_kinematics_filepath = LaunchConfiguration(
+        "robot_description_kinematics"
+    ).perform(context)
+    namespace = LaunchConfiguration("namespace").perform(context)
+    moveit_config_package = LaunchConfiguration("moveit_config_package").perform(
+        context
+    )
 
     robot_description = {"robot_description": robot_description_content}
-
     robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
+    robot_description_kinematics = {"robot_description_kinematics":load_yaml_abs(robot_description_kinematics_filepath)}
     use_sim_time = {"use_sim_time": use_sim_time}
-    robot_description_kinematics = os.path.join(
-        get_package_share_directory("rbs_arm"), 
-        "config",
-        "kinematics.yaml")
-    
+
     # Planning Configuration
     ompl_planning_pipeline_config = {
-        "move_group": {
+        "default_planning_pipeline": "ompl",
+        "planning_pipelines": ["ompl"],
+        "ompl": {
             "planning_plugin": "ompl_interface/OMPLPlanner",
-            "request_adapters": """default_planner_request_adapters/AddTimeOptimalParameterization default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints""",
+            "request_adapters":
+            """default_planner_request_adapters/AddTimeOptimalParameterization default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints""",
             "start_state_max_bounds_error": 0.1,
         }
     }
-    ompl_planning_yaml = load_yaml("rbs_arm", "config/moveit/ompl_planning.yaml")
-    ompl_planning_pipeline_config["move_group"].update(ompl_planning_yaml)
+    ompl_planning_yaml = load_yaml(moveit_config_package, "config/ompl_planning.yaml")
+    ompl_planning_pipeline_config["ompl"].update(ompl_planning_yaml)
 
-    moveit_controllers = load_yaml("rbs_arm", "config/moveit/moveit_controllers.yaml")
+    controllers_yaml = load_yaml(moveit_config_package, "config/moveit_controllers.yaml")
+
+    moveit_controllers = {
+        "moveit_simple_controller_manager":
+            controllers_yaml,
+        "moveit_controller_manager":
+        "moveit_simple_controller_manager/MoveItSimpleControllerManager",
+    }
 
     trajectory_execution = {
-        "moveit_manage_controllers": True,
-        "trajectory_execution.allowed_execution_duration_scaling": 100.0,
+        "moveit_manage_controllers": False,
+        "trajectory_execution.allowed_execution_duration_scaling": 1.2,
         "trajectory_execution.allowed_goal_duration_margin": 0.5,
         "trajectory_execution.allowed_start_tolerance": 0.01,
     }
@@ -100,11 +133,18 @@ def generate_launch_description():
         "publish_transforms_updates": True,
     }
 
+    robot_description_planning = {
+        "robot_description_planning":
+        load_yaml(
+            moveit_config_package,
+            os.path.join("config", "joint_limits.yaml"),
+        )
+    }
+
     move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
         namespace=namespace,
-        output="screen",
         parameters=[
             robot_description,
             robot_description_semantic,
@@ -114,10 +154,30 @@ def generate_launch_description():
             moveit_controllers,
             planning_scene_monitor_parameters,
             use_sim_time,
+            robot_description_planning
         ],
     )
-    
+
+    rviz_node = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        output="log",
+        # arguments=["-d", rviz_full_config],
+        parameters=[
+            robot_description,
+            robot_description_semantic,
+            robot_description_kinematics,
+            robot_description_planning,
+            ompl_planning_pipeline_config,
+            trajectory_execution,
+            moveit_controllers,
+            planning_scene_monitor_parameters,
+        ],
+    )
+
     nodes_to_start = [
-        move_group_node,
+        move_group_node, rviz_node
     ]
-    return LaunchDescription(declared_arguments + nodes_to_start)
+
+    return nodes_to_start

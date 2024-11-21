@@ -1,11 +1,5 @@
-# NOTE: I don't know why, but MoveIt wants that this file was being here
-# Any provided paths to the move_group node was ignored
-/**:
-  ros__parameters:
-    robot_description_kinematics:
-      rbs_arm:
-        kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
-        kinematics_solver_search_resolution: 0.005
-        kinematics_solver_timeout: 0.005
-        kinematics_solver_attempts: 3
- 
+rbs_arm:
+  kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+  kinematics_solver_search_resolution: 0.005
+  kinematics_solver_timeout: 0.005
+  kinematics_solver_attempts: 3

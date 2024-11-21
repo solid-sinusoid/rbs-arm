@@ -1,4 +1,4 @@
-gripper_name: !param gripper_name
-hardware: !param hardware
+gripper_name: "rbs_gripper"
+hardware: "gazebo"
 simulation_controllers: !variable simulation_controllers
 namespace: ""
