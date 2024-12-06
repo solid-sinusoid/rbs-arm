@@ -1,4 +1,4 @@
 gripper_name: "rbs_gripper"
 hardware: "gazebo"
-simulation_controllers: !variable simulation_controllers
+simulation_controllers: !variable controllers_file
 namespace: ""
