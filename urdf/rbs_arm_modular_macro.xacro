@@ -44,8 +44,7 @@
     <xacro:if value="${hardware=='gazebo'}">
       <xacro:fts name="fts_sensor" tf_prefix="${tf_prefix}" link="${tf_prefix}tool0" />
       <gazebo>
-        <plugin filename="libign_ros2_control-system.so"
-          name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
           <parameters>$(arg simulation_controllers)</parameters>
           <ros>
             <namespace>${namespace}</namespace>

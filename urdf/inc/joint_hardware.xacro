@@ -5,7 +5,7 @@
         <ros2_control name="${joint_name}_hardware_interface" type="actuator">
             <hardware>
                 <xacro:if value="${hardware=='gazebo'}">
-                    <plugin>ign_ros2_control/IgnitionSystem</plugin>
+                    <plugin>gz_ros2_control/GazeboSimSystem</plugin>
                 </xacro:if>
                 <xacro:if value="${hardware=='mock'}">
                     <plugin>mock_components/GenericSystem</plugin>

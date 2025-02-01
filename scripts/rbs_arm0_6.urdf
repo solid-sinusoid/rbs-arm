@@ -2,7 +2,7 @@
 <robot  name="arm0" >
  <ros2_control  type="actuator"  name="0_interface" >
   <hardware >
-   <plugin >ign_ros2_control/IgnitionSystem</plugin>
+   <plugin >gz_ros2_control/GazeboSimSystem</plugin>
   </hardware>
   <joint  name="arm0_start_link_0_arm0_fork_link_1" >
    <command_interface  name="position" />
@@ -14,7 +14,7 @@
  </ros2_control>
  <ros2_control  type="actuator"  name="1_interface" >
   <hardware >
-   <plugin >ign_ros2_control/IgnitionSystem</plugin>
+   <plugin >gz_ros2_control/GazeboSimSystem</plugin>
   </hardware>
   <joint  name="arm0_fork_link_1_arm0_main_link_2" >
    <command_interface  name="position" />
@@ -26,7 +26,7 @@
  </ros2_control>
  <ros2_control  type="actuator"  name="2_interface" >
   <hardware >
-   <plugin >ign_ros2_control/IgnitionSystem</plugin>
+   <plugin >gz_ros2_control/GazeboSimSystem</plugin>
   </hardware>
   <joint  name="arm0_main_link_2_arm0_fork_link_3" >
    <command_interface  name="position" />
@@ -38,7 +38,7 @@
  </ros2_control>
  <ros2_control  type="actuator"  name="3_interface" >
   <hardware >
-   <plugin >ign_ros2_control/IgnitionSystem</plugin>
+   <plugin >gz_ros2_control/GazeboSimSystem</plugin>
   </hardware>
   <joint  name="arm0_fork_link_3_arm0_main_link_4" >
    <command_interface  name="position" />
@@ -50,7 +50,7 @@
  </ros2_control>
  <ros2_control  type="actuator"  name="4_interface" >
   <hardware >
-   <plugin >ign_ros2_control/IgnitionSystem</plugin>
+   <plugin >gz_ros2_control/GazeboSimSystem</plugin>
   </hardware>
   <joint  name="arm0_main_link_4_arm0_fork_link_5" >
    <command_interface  name="position" />
@@ -62,7 +62,7 @@
  </ros2_control>
  <ros2_control  type="actuator"  name="5_interface" >
   <hardware >
-   <plugin >ign_ros2_control/IgnitionSystem</plugin>
+   <plugin >gz_ros2_control/GazeboSimSystem</plugin>
   </hardware>
   <joint  name="arm0_fork_link_5_arm0_ee_link_6" >
    <command_interface  name="position" />
@@ -74,7 +74,7 @@
  </ros2_control>
  <ros2_control  type="actuator"  name="6_interface" >
   <hardware >
-   <plugin >ign_ros2_control/IgnitionSystem</plugin>
+   <plugin >gz_ros2_control/GazeboSimSystem</plugin>
   </hardware>
   <joint  name="arm0_base_0_arm0_rot_1" >
    <command_interface  name="position" />

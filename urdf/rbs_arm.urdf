@@ -77,7 +77,7 @@
   </link>
   <ros2_control name="fork0_link_joint_hardware_interface" type="actuator">
     <hardware>
-      <plugin>ign_ros2_control/IgnitionSystem</plugin>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
     </hardware>
     <joint name="fork0_link_joint">
       <command_interface name="position">
@@ -145,7 +145,7 @@
   </link>
   <ros2_control name="main0_link_joint_hardware_interface" type="actuator">
     <hardware>
-      <plugin>ign_ros2_control/IgnitionSystem</plugin>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
     </hardware>
     <joint name="main0_link_joint">
       <command_interface name="position">
@@ -213,7 +213,7 @@
   </link>
   <ros2_control name="fork1_link_joint_hardware_interface" type="actuator">
     <hardware>
-      <plugin>ign_ros2_control/IgnitionSystem</plugin>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
     </hardware>
     <joint name="fork1_link_joint">
       <command_interface name="position">
@@ -281,7 +281,7 @@
   </link>
   <ros2_control name="main1_link_joint_hardware_interface" type="actuator">
     <hardware>
-      <plugin>ign_ros2_control/IgnitionSystem</plugin>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
     </hardware>
     <joint name="main1_link_joint">
       <command_interface name="position">
@@ -349,7 +349,7 @@
   </link>
   <ros2_control name="fork2_link_joint_hardware_interface" type="actuator">
     <hardware>
-      <plugin>ign_ros2_control/IgnitionSystem</plugin>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
     </hardware>
     <joint name="fork2_link_joint">
       <command_interface name="position">
@@ -423,7 +423,7 @@
   </link>
   <ros2_control name="ee_link_joint_hardware_interface" type="actuator">
     <hardware>
-      <plugin>ign_ros2_control/IgnitionSystem</plugin>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
     </hardware>
     <joint name="ee_link_joint">
       <command_interface name="position">
@@ -467,7 +467,7 @@
   <ros2_control name="rbs_gripper_gazebo" type="system">
     <!-- Plugins -->
     <hardware>
-      <plugin>ign_ros2_control/IgnitionSystem</plugin>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
     </hardware>
     <!-- Joint interfaces -->
     <joint name="rbs_gripper_rot_base_joint">
