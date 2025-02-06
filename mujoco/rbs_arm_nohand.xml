@@ -1,0 +1,105 @@
+<mujoco model="rbs_arm_new">
+  <compiler angle="radian" meshdir="../meshes/collision"></compiler>
+  <asset>
+    <mesh file="base_link.stl" name="base_link"></mesh>
+    <mesh file="axis1_fork.stl" name="axis1_fork"></mesh>
+    <mesh file="axis2_main.stl" name="axis2_main"></mesh>
+    <mesh file="axis7_tail.stl" name="axis7_tail"></mesh>
+  </asset>
+  <default>
+    <default class="rbs_arm">
+      <general biastype="affine" ctrlrange="-6.14159 6.14159" dyntype="none" forcerange="-78 78"></general>
+      <joint actuatorfrcrange="-78 78" armature="0.1" damping="1.0" range="-6.14159 6.14159"></joint>
+      <default class="finger">
+        <joint actuatorfrcrange="-10 10" axis="-1 0 0" pos="0 0 0" range="0 0.064" type="slide"></joint>
+      </default>
+      <default class="position_actuation">
+        <default class="big_joint">
+          <position kp="1000" kv="100"></position>
+        </default>
+        <default class="small_joint">
+          <position kp="500" kv="50"></position>
+        </default>
+      </default>
+    </default>
+  </default>
+  <worldbody>
+    <body name="base" pos="0 0 0" childclass="rbs_arm">
+    <geom conaffinity="0" contype="0" density="0" group="1" mesh="base_link" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+    <geom mesh="base_link" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+    <body  name="axis1_fork" pos="0 0 0.11165" quat="-3.67321e-06 0 0 -1">
+      <inertial diaginertia="0.0044 0.005 0.0012" mass="0.5144" pos="-0.0064 0.0027 0.0675" quat="1.0 0.0 0.0 0.0"></inertial>
+      <joint axis="0 0 1" name="joint1" pos="0 0 0"></joint>
+      <geom conaffinity="0" contype="0" density="0" group="1" mesh="axis1_fork" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+      <geom mesh="axis1_fork" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+      <body name="axis2_main" pos="0 0 0.15465">
+        <inertial diaginertia="0.0133 0.0132 0.0015" mass="1.2559" pos="-0.0017 0.0068 0.0855" quat="1.0 0.0 0.0 0.0"></inertial>
+        <joint axis="1 0 0" name="joint2" pos="0 0 0" range="-2.43 2.43"></joint>
+        <geom conaffinity="0" contype="0" density="0" group="1" mesh="axis2_main" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+        <geom mesh="axis2_main" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+        <body name="axis3_fork" pos="0 0 0.11995">
+          <inertial diaginertia="0.0044 0.005 0.0012" mass="0.5144" pos="-0.0064 0.0027 0.0675" quat="1.0 0.0 0.0 0.0"></inertial>
+          <joint axis="0 0 1" name="joint3" pos="0 0 0"></joint>
+          <geom conaffinity="0" contype="0" density="0" group="1" mesh="axis1_fork" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+          <geom mesh="axis1_fork" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+          <body name="axis4_main" pos="0 0 0.15465">
+            <inertial diaginertia="0.0133 0.0132 0.0015" mass="1.2559" pos="-0.0017 0.0068 0.0855" quat="1.0 0.0 0.0 0.0"></inertial>
+            <joint axis="1 0 0" name="joint4" pos="0 0 0" range="-2.43 2.43"></joint>
+            <geom conaffinity="0" contype="0" density="0" group="1" mesh="axis2_main" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+            <geom mesh="axis2_main" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+            <body name="axis5_fork" pos="0 0 0.11995">
+              <inertial diaginertia="0.0044 0.005 0.0012" mass="0.5144" pos="-0.0064 0.0027 0.0675" quat="1.0 0.0 0.0 0.0"></inertial>
+              <joint axis="0 0 1" name="joint5" pos="0 0 0"></joint>
+              <geom conaffinity="0" contype="0" density="0" group="1" mesh="axis1_fork" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+              <geom mesh="axis1_fork" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+              <body name="axis6_main" pos="0 0 0.15465">
+                <inertial diaginertia="0.0133 0.0132 0.0015" mass="1.2559" pos="-0.0017 0.0068 0.0855" quat="1.0 0.0 0.0 0.0"></inertial>
+                <joint axis="1 0 0" name="joint6" pos="0 0 0" range="-2.43 2.43"></joint>
+                <geom conaffinity="0" contype="0" density="0" group="1" mesh="axis2_main" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+                <geom mesh="axis2_main" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+                <body name="axis7_tail" pos="0 0 0.0754">
+                  <inertial diaginertia="0.0013 0.0013 0.0004" mass="0.4617" pos="-0.001 0.0008 0.0427" quat="1.0 0.0 0.0 0.0"></inertial>
+                  <joint axis="0 0 1" name="joint7" pos="0 0 0"></joint>
+                  <geom conaffinity="0" contype="0" density="0" group="1" mesh="axis7_tail" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+                  <geom mesh="axis7_tail" rgba="0.75294 0.75294 0.75294 1" type="mesh"></geom>
+                  <body name="attachment" pos="0 0 0.141" quat="0.0 0 0 1.0">
+                      <inertial diaginertia="0.01 0.01 0.01" mass="5.0" pos="0 0 0" quat="1.0 0.0 0.0 0.0"></inertial>
+                    <site group="1" name="attachment_site" quat="0 0 0 1" rgba="1 0 0 1" size="0.01"></site>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </body>
+  </worldbody>
+
+  <contact>
+    <exclude body1="base" body2="axis1_fork"/> 
+  </contact>
+  <!-- <actuator> -->
+  <!--   <position class="big_joint" ctrlrange="-6.14159 6.14159" forcerange="-87 87" joint="joint1" name="joint1"></position> -->
+  <!--   <position class="big_joint" ctrlrange="-2.43 2.43" forcerange="-87 87" joint="joint2" name="joint2"></position> -->
+  <!--   <position class="big_joint" ctrlrange="-6.14159 6.14159" forcerange="-87 87" joint="joint3" name="joint3"></position> -->
+  <!--   <position class="big_joint" ctrlrange="-2.43 2.43" forcerange="-87 87" joint="joint4" name="joint4"></position> -->
+  <!--   <position class="big_joint" ctrlrange="-6.14159 6.14159" forcerange="-87 87" joint="joint5" name="joint5"></position> -->
+  <!--   <position class="big_joint" ctrlrange="-2.43 2.43" forcerange="-87 87" joint="joint6" name="joint6"></position> -->
+  <!--   <position class="big_joint" ctrlrange="-6.14159 6.14159" forcerange="-87 87" joint="joint7" name="joint7"></position> -->
+  <!-- </actuator> -->
+  <actuator>
+    <motor name="joint1" joint="joint1" ctrlrange="-320 320"/>
+    <motor name="joint2" joint="joint2" ctrlrange="-320 320"/>
+    <motor name="joint3" joint="joint3" ctrlrange="-176 176"/>
+    <motor name="joint4" joint="joint4" ctrlrange="-176 176"/>
+    <motor name="joint5" joint="joint5" ctrlrange="-110 110"/>
+    <motor name="joint6" joint="joint6" ctrlrange="-78 78"/>
+    <motor name="joint7" joint="joint7" ctrlrange="-78 78"/>
+  </actuator>
+  <keyframe>
+    <key ctrl="0.0 -0.259285 0.0 -0.856813 0.0 -0.903378 0.0" name="home" qpos="0.0 -0.259285 0.0 -0.856813 0.0 -0.903378 0.0"></key>
+    <key ctrl="0.0 0.0 0.0 0.0 0.0 0.0 0.0" name="zero" qpos="0.0 0.0 0.0 0.0 0.0 0.0 0.0"></key>
+    <key ctrl="0.0 -1.570795 0.0 0.0 0.0 0.0 0.0" name="load" qpos="0.0 -1.570795 0.0 0.0 0.0 0.0 0.0"></key>
+  </keyframe>
+</mujoco>
