@@ -57,7 +57,7 @@
 
     <ros2_control name="${tf_prefix}${name}" type="sensor">
       <hardware>
-          <plugin>ign_ros2_control/IgnitionFts</plugin>
+          <plugin>gz_ros2_control/GzFts</plugin>
       </hardware>
 
       <sensor name="${tf_prefix}${name}">

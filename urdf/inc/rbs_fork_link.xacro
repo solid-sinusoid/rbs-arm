@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="fork_link" params="tf_prefix parent name hardware p d">
+  <xacro:macro name="fork_link"
+    params="tf_prefix parent name hardware p d initial_joint_position:=^|0.0">
 
     <xacro:include filename="$(find rbs_arm)/urdf/inc/joint_hardware.xacro" />
     <xacro:include filename="$(find rbs_arm)/urdf/inc/materials.xacro" />
@@ -8,10 +9,10 @@
     <joint name="${tf_prefix}${name}_joint" type="revolute">
       <limit lower="-6.14159" upper="6.14159" effort="78" velocity="0.52" />
       <xacro:if value="${parent=='base_link'}">
-        <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.17833" />
+        <origin rpy="0.0 0 -3.1416" xyz="0 0 0.11165"></origin>
       </xacro:if>
       <xacro:unless value="${parent=='base_link'}">
-        <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.13300" />
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.11995"></origin>
       </xacro:unless>
       <parent link="${tf_prefix}${parent}" />
       <child link="${tf_prefix}${name}" />
@@ -19,31 +20,32 @@
     </joint>
 
     <link name="${tf_prefix}${name}">
-      <collision name="${tf_prefix}${name}_collision">
-        <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000" />
+      <inertial>
+        <origin rpy="0 0 0" xyz="-0.0050017 0.088736 0.0023758"></origin>
+        <mass value="0.49312"></mass>
+        <inertia ixx="0.0016921" ixy="-1.8404E-05" ixz="9.951E-07" iyy="0.00087841"
+          iyz="-2.5874E-06" izz="0.0019955"></inertia>
+      </inertial>
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"></origin>
         <geometry>
-          <mesh filename="file://$(find rbs_arm)/meshes/collision/fork_link.stl"
-            scale="1.00000 1.00000 1.00000" />
+          <mesh filename="file://$(find rbs_arm)/meshes/visual/axis1_fork.stl"></mesh>
+        </geometry>
+        <material name="">
+          <color rgba="0.75294 0.75294 0.75294 1"></color>
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0"></origin>
+        <geometry>
+          <mesh filename="file://$(find rbs_arm)/meshes/collision/axis1_fork.stl"></mesh>
         </geometry>
       </collision>
-      <inertial>
-        <inertia ixx="0.00367804533572758" ixy="1.04277925521833E-05" ixz="-0.00149971410403071"
-          iyy="0.00415208849477534" iyz="-0.00122" izz="0.00329" />
-        <origin rpy="0.00000 0.00000 0.00000"
-          xyz="0.0472051139085306 0.00208890925682996 0.0557265410642575" />
-        <mass value="1.12472202892859" />
-      </inertial>
-      <visual name="${tf_prefix}${name}_visual">
-        <origin rpy="0.00000 -0.00000 -0.00000" xyz="0.00000 -0.00000 0.00000" />
-        <geometry>
-          <mesh filename="file://$(find rbs_arm)/meshes/visual/fork_link.dae"
-            scale="1.00000 1.00000 1.00000" />
-        </geometry>
-      </visual>
     </link>
 
-    <xacro:joint_hardware joint_name="${tf_prefix}${name}_joint" hardware="${hardware}" p="${p}" d="${d}" />
-    <xacro:rbs_materials link_name="${tf_prefix}${name}" link_type="fork" />
+    <xacro:joint_hardware joint_name="${tf_prefix}${name}_joint" hardware="${hardware}" p="${p}"
+      d="${d}" initial_joint_position="${initial_joint_position}" />
+    <!-- <xacro:rbs_materials link_name="${tf_prefix}${name}" link_type="fork" /> -->
 
   </xacro:macro>
 </robot>

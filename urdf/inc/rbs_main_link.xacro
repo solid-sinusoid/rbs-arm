@@ -1,45 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="main_link" params="tf_prefix parent name hardware p d">
+  <xacro:macro name="main_link"
+    params="tf_prefix parent name hardware p d initial_joint_position:=^|0.0">
 
     <xacro:include filename="$(find rbs_arm)/urdf/inc/joint_hardware.xacro" />
     <xacro:include filename="$(find rbs_arm)/urdf/inc/materials.xacro" />
 
     <joint name="${tf_prefix}${name}_joint" type="revolute">
-      <limit lower="-1.5708" upper="3.14159" effort="78" velocity="0.52" />
-      <origin rpy="-0.00000 0.00000 0.00000" xyz="0.10000 0.00000 0.09400" />
+      <limit lower="-2.43" upper="2.43" effort="78" velocity="0.52" />
+      <!-- <origin rpy="0.0 0 -3.1416" xyz="0 0 0.11165"></origin> -->
+      <origin rpy="0.0 0 0" xyz="0 0.0 0.15465"></origin>
+
       <parent link="${tf_prefix}${parent}" />
       <child link="${tf_prefix}${name}" />
-      <axis xyz="0 1 0" />
+      <axis xyz="1 0 0" />
     </joint>
 
     <link name="${tf_prefix}${name}">
-      <collision name="${tf_prefix}${name}_collision">
-        <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.00000" />
+      <inertial>
+        <origin rpy="0 0 0" xyz="0.00027998 -0.045366 0.0068959"></origin>
+        <mass value="0.42726"></mass>
+        <inertia ixx="0.0013794" ixy="-4.0542E-05" ixz="-8.9181E-06" iyy="0.00047255"
+          iyz="-3.4771E-05" izz="0.001587"></inertia>
+      </inertial>
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"></origin>
         <geometry>
-          <mesh filename="file://$(find rbs_arm)/meshes/collision/main_link.stl"
-            scale="1.00000 1.00000 1.00000" />
+          <mesh filename="file://$(find rbs_arm)/meshes/visual/axis2_main.stl"></mesh>
+        </geometry>
+        <material name="">
+          <color rgba="0.75294 0.75294 0.75294 1"></color>
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0"></origin>
+        <geometry>
+          <mesh filename="file://$(find rbs_arm)/meshes/collision/axis2_main.stl"></mesh>
         </geometry>
       </collision>
-      <inertial>
-        <inertia ixx="0.00315699373090845" ixy="2.84713820858537E-05" ixz="-7.01601261191721E-05"
-          iyy="0.00343729241263707" iyz="-0.000101485203138902" izz="0.00125534890134052" />
-        <origin rpy="0.00000 0.00000 0.00000"
-          xyz="0.00186712264682627 -0.000412152188777604 0.0516389446895805" />
-        <mass value="1.58688811563124" />
-      </inertial>
-      <visual name="${tf_prefix}${name}_visual">
-        <origin rpy="0.00000 -0.00000 -0.00000" xyz="0.00000 0.00000 0.00000" />
-        <geometry>
-          <mesh filename="file://$(find rbs_arm)/meshes/visual/main_link.dae"
-            scale="1.00000 1.00000 1.00000" />
-        </geometry>
-      </visual>
     </link>
 
-    <xacro:joint_hardware joint_name="${tf_prefix}${name}_joint" hardware="${hardware}"
-      p="${p}" d="${d}" />
-    <xacro:rbs_materials link_name="${tf_prefix}${name}" link_type="main_link" />
+    <xacro:joint_hardware joint_name="${tf_prefix}${name}_joint" hardware="${hardware}" p="${p}"
+      d="${d}" initial_joint_position="${initial_joint_position}" />
+    <!-- <xacro:rbs_materials link_name="${tf_prefix}${name}" link_type="main_link" /> -->
 
   </xacro:macro>
 </robot>

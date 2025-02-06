@@ -1,17 +1,19 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:include filename="$(find rbs_arm)/urdf/inc/joint_interface.xacro" />
-    <xacro:macro name="joint_hardware" params="joint_name hardware p:=^ d:=^">
-        <ros2_control name="${joint_name}_hardware_interface" type="actuator">
-            <hardware>
-                <xacro:if value="${hardware=='gazebo'}">
-                    <plugin>gz_ros2_control/GazeboSimSystem</plugin>
-                </xacro:if>
-                <xacro:if value="${hardware=='mock'}">
-                    <plugin>mock_components/GenericSystem</plugin>
-                </xacro:if>
-            </hardware>
-            <xacro:joint_interface name="${joint_name}" p="${p}" d="${d}" />
-        </ros2_control>
-    </xacro:macro>
+  <xacro:include filename="$(find rbs_arm)/urdf/inc/joint_interface.xacro" />
+  <xacro:macro name="joint_hardware"
+    params="joint_name hardware p:=^ d:=^ initial_joint_position:=^|0.0">
+    <ros2_control name="${joint_name}_hardware_interface" type="actuator">
+      <hardware>
+        <xacro:if value="${hardware=='gazebo'}">
+          <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+        </xacro:if>
+        <xacro:if value="${hardware=='mock'}">
+          <plugin>mock_components/GenericSystem</plugin>
+        </xacro:if>
+      </hardware>
+      <xacro:joint_interface name="${joint_name}" p="${p}" d="${d}"
+        initial_joint_position="${initial_joint_position}" />
+    </ros2_control>
+  </xacro:macro>
 </robot>

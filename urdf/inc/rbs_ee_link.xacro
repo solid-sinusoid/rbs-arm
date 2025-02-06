@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="ee_link" params="tf_prefix parent hardware p d">
+  <xacro:macro name="ee_link" params="tf_prefix parent hardware p d initial_joint_position:=^|0.0">
 
     <xacro:include filename="$(find rbs_arm)/urdf/inc/joint_hardware.xacro" />
     <xacro:include filename="$(find rbs_arm)/urdf/inc/materials.xacro" />
 
     <joint name="${tf_prefix}ee_link_joint" type="revolute">
-      <limit lower="-1.5708" upper="3.14159" effort="78" velocity="0.52" />
-      <origin rpy="0.00000 0.00000 0.00000" xyz="0.10000 0.00000 0.09473" />
+      <limit lower="-2.43" upper="2.43" effort="78" velocity="0.52" />
+      <origin rpy="0 0 0.0" xyz="0.0 0.0 0.0754"></origin>
       <parent link="${tf_prefix}${parent}" />
       <child link="${tf_prefix}ee_link" />
-      <axis xyz="0 1 0" />
+      <axis xyz="0 0 1" />
     </joint>
 
     <joint name="${tf_prefix}tool0_joint" type="fixed">
-      <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.11000" />
+      <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 0.14100" />
       <parent link="${tf_prefix}ee_link" />
       <child link="${tf_prefix}tool0" />
     </joint>
@@ -22,31 +22,32 @@
     <link name="${tf_prefix}tool0" />
 
     <link name="${tf_prefix}ee_link">
-      <collision name="${tf_prefix}ee_link_collision">
-        <origin rpy="-0.00000 0.00000 -0.00000" xyz="0.00000 -0.00000 0.00000" />
+      <inertial>
+        <origin rpy="0 0 0" xyz="1.594E-06 0.085889 0.0021969"></origin>
+        <mass value="0.20976"></mass>
+        <inertia ixx="0.00016257" ixy="4.2628E-07" ixz="-3.8857E-07" iyy="0.00022468"
+          iyz="2.1709E-05" izz="0.00023702"></inertia>
+      </inertial>
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"></origin>
         <geometry>
-          <mesh filename="file://$(find rbs_arm)/meshes/collision/ee_link.stl"
-            scale="1.00000 1.00000 1.00000" />
+          <mesh filename="file://$(find rbs_arm)/meshes/visual/axis7_tail.stl"></mesh>
+        </geometry>
+        <material name="">
+          <color rgba="0.75294 0.75294 0.75294 1"></color>
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0"></origin>
+        <geometry>
+          <mesh filename="file://$(find rbs_arm)/meshes/collision/axis7_tail.stl"></mesh>
         </geometry>
       </collision>
-      <inertial>
-        <inertia ixx="0.00147695259043549" ixy="-2.66894744420299E-05" ixz="-4.40871314563273E-05"
-          iyy="0.00135500487881796" iyz="-3.19001462979333E-05" izz="0.00087582892706912" />
-        <origin rpy="0.00000 0.00000 0.00000"
-          xyz="-9.7531539777207E-06 -0.000888494418875867 0.0342332199538358" />
-        <mass value="1.88031044620482" />
-      </inertial>
-      <visual name="${tf_prefix}ee_link_visual">
-        <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000" />
-        <geometry>
-          <mesh filename="file://$(find rbs_arm)/meshes/visual/ee_link.dae"
-            scale="1.00000 1.00000 1.00000" />
-        </geometry>
-      </visual>
     </link>
 
-    <xacro:joint_hardware joint_name="${tf_prefix}ee_link_joint" hardware="${hardware}" p="${p}" d="${d}" />
-    <xacro:rbs_materials link_name="${tf_prefix}ee_link" link_type="ee_link" />
+    <xacro:joint_hardware joint_name="${tf_prefix}ee_link_joint" hardware="${hardware}" p="${p}"
+      d="${d}" initial_joint_position="${initial_joint_position}" />
+    <!-- <xacro:rbs_materials link_name="${tf_prefix}ee_link" link_type="ee_link" /> -->
 
   </xacro:macro>
 </robot>
