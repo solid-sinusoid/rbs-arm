@@ -2,16 +2,12 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <!-- Individual joint. -->
-  <xacro:macro name="joint_interface" params="name p:=^ d:=^ initial_joint_position:=^|0.0">
+  <xacro:macro name="joint_interface" params="name initial_joint_position:=^|0.0">
     <joint name="${name}">
       <command_interface name="position" />
       <command_interface name="velocity" />
-      <!-- WARN When this active a robot falls down -->
       <!-- <command_interface name="effort"/> -->
 
-      <param name="p">${p}</param>
-      <param name="d">${d}</param>
-      <!-- <command_interface name="effort"/> -->
       <state_interface name="position">
         <param name="initial_value">${initial_joint_position}</param>
       </state_interface>
